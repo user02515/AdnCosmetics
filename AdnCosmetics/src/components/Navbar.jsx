@@ -8,7 +8,8 @@ import { useState, useEffect } from "react";
 
 const navLinks = [
   { label: "Inicio", href: "#inicio" },
-  { label: "Categorías", href: "#productos" },
+  { label: "Productos", href: "#productos" },
+  { label: "Categorías", href: "#categorias" },
   { label: "Marcas", href: "#marcas" },
   { label: "Acerca de Nosotros", href: "#nosotros" },
 ];
@@ -183,10 +184,15 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Botón cotizar */}
-        <button className="vdn-nav-pill" onClick={() => scrollTo("#contacto")}>
-          Cotizar →
-        </button>
+        {/* Botón WhatsApp */}
+        <a
+          className="vdn-nav-pill"
+          href="https://wa.me/59171234567"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WhatsApp →
+        </a>
 
         {/* Hamburguesa mobile */}
         <button
@@ -224,13 +230,17 @@ export default function Navbar() {
             {link.label}
           </a>
         ))}
-        <button
+
+        {/* Botón WhatsApp Mobile */}
+        <a
           className="vdn-nav-pill"
           style={{ alignSelf: "flex-start", marginTop: 8 }}
-          onClick={() => scrollTo("#contacto")}
+          href="https://wa.me/59171234567"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          Cotizar →
-        </button>
+          WhatsApp →
+        </a>
       </div>
     </>
   );
