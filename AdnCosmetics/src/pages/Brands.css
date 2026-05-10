@@ -1,0 +1,23 @@
+.brands-page {
+  padding: 40px 20px;
+}
+
+.page-title {
+  font-size: 3rem;
+
+  color: var(--blue-deep);
+
+  margin-bottom: 40px;
+
+  font-weight: bold;
+}
+
+.brands-grid {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 30px;
+
+  align-items: center;
+}
