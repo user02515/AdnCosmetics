@@ -320,7 +320,6 @@
     transform: translateY(0);
   }
 }
-
 /* ── STRIP ── */
 .strip {
   background: linear-gradient(
@@ -1266,7 +1265,6 @@
     grid-template-columns: 1fr 1fr;
   }
 }
-
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    CARRUSEL PUBLICITARIO + REDES SOCIALES
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -1277,7 +1275,7 @@
   position: relative;
   overflow: visible;
   min-height: 560px;
-  padding-right: 80px; /* espacio para el sidebar fixed */
+  padding-right: 80px;
 }
 
 /* ── Sidebar de redes sociales — sigue el scroll ── */
@@ -1323,10 +1321,12 @@
     box-shadow 0.3s;
   position: relative;
 }
+
 .social-icon svg {
   width: 20px;
   height: 20px;
 }
+
 .social-icon span {
   position: absolute;
   left: 54px;
@@ -1344,6 +1344,7 @@
     transform 0.2s;
   transform: translateX(-6px);
 }
+
 .social-icon span::before {
   content: "";
   position: absolute;
@@ -1353,10 +1354,12 @@
   border: 5px solid transparent;
   border-right-color: var(--dark);
 }
+
 .social-icon:hover span {
   opacity: 1;
   transform: translateX(0);
 }
+
 .social-icon:hover {
   transform: scale(1.15) translateX(4px);
 }
@@ -1366,23 +1369,29 @@
   background: linear-gradient(135deg, #1877f2, #0d5dbf);
   box-shadow: 0 4px 16px rgba(24, 119, 242, 0.3);
 }
+
 .social-icon.fb:hover {
   box-shadow: 0 8px 28px rgba(24, 119, 242, 0.5);
 }
+
 .social-icon.wa {
   background: linear-gradient(135deg, #25d366, #128c7e);
   box-shadow: 0 4px 16px rgba(37, 211, 102, 0.3);
 }
+
 .social-icon.wa:hover {
   box-shadow: 0 8px 28px rgba(37, 211, 102, 0.5);
 }
+
 .social-icon.tt {
   background: linear-gradient(135deg, #010101, #333);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
 }
+
 .social-icon.tt:hover {
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4);
 }
+
 .social-icon.ig {
   background: linear-gradient(
     135deg,
@@ -1394,9 +1403,11 @@
   );
   box-shadow: 0 4px 16px rgba(220, 39, 67, 0.3);
 }
+
 .social-icon.ig:hover {
   box-shadow: 0 8px 28px rgba(220, 39, 67, 0.5);
 }
+
 .social-icon.ig svg {
   stroke: white;
   fill: none;
@@ -1432,6 +1443,7 @@
   margin-top: 10px;
   line-height: 1.1;
 }
+
 .carousel-header h2 span {
   background: linear-gradient(135deg, var(--pink-hot), var(--blue-vivid));
   -webkit-background-clip: text;
@@ -1442,6 +1454,7 @@
 /* ── El carrusel en sí ── */
 .carousel {
   position: relative;
+  width: 100%;
   border-radius: 24px;
   overflow: hidden;
   box-shadow:
@@ -1452,6 +1465,7 @@
   background: var(--dark);
   cursor: grab;
 }
+
 .carousel:active {
   cursor: grabbing;
 }
@@ -1465,16 +1479,24 @@
 
 .carousel-slide {
   min-width: 100%;
+  width: 100%;
   height: 100%;
   position: relative;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 /* Imagen real */
 .carousel-img {
+  position: absolute;
+  inset: 0;
+
   width: 100%;
   height: 100%;
+
   object-fit: cover;
+  object-position: center;
+
   display: block;
 }
 
@@ -1495,10 +1517,12 @@
     #c0186e 100%
   );
 }
+
 .carousel-placeholder-icon {
   font-size: 56px;
   opacity: 0.4;
 }
+
 .carousel-placeholder-label {
   font-family: "Cormorant Garamond", serif;
   font-size: 36px;
@@ -1506,24 +1530,11 @@
   color: rgba(255, 255, 255, 0.5);
   letter-spacing: 2px;
 }
+
 .carousel-placeholder-hint {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.25);
   letter-spacing: 1px;
-}
-
-/* Fondo diferente por slide */
-.carousel-slide:nth-child(1) .carousel-placeholder {
-  background: linear-gradient(145deg, #1a0533, #6b1054, #e8186d, #ff80b5);
-}
-.carousel-slide:nth-child(2) .carousel-placeholder {
-  background: linear-gradient(145deg, #0b1560, #1630a8, #4e78ff);
-}
-.carousel-slide:nth-child(3) .carousel-placeholder {
-  background: linear-gradient(145deg, #2a0a20, #e8186d, #ffd166);
-}
-.carousel-slide:nth-child(4) .carousel-placeholder {
-  background: linear-gradient(145deg, #0a1040, #1630a8, #ff3d8b);
 }
 
 /* Caption sobre la imagen */
@@ -1539,6 +1550,7 @@
     transparent 100%
   );
 }
+
 .carousel-caption-num {
   font-family: "Cormorant Garamond", serif;
   font-size: 11px;
@@ -1547,6 +1559,7 @@
   margin-bottom: 6px;
   font-weight: 600;
 }
+
 .carousel-caption h3 {
   font-family: "Cormorant Garamond", serif;
   font-size: clamp(22px, 2.5vw, 32px);
@@ -1554,6 +1567,7 @@
   color: white;
   margin-bottom: 4px;
 }
+
 .carousel-caption p {
   font-size: 14px;
   color: rgba(255, 255, 255, 0.6);
@@ -1579,18 +1593,22 @@
   transition: all 0.3s;
   z-index: 5;
 }
+
 .carousel-btn svg {
   width: 18px;
   height: 18px;
 }
+
 .carousel-btn:hover {
   background: var(--pink-hot);
   border-color: var(--pink-hot);
   transform: translateY(-50%) scale(1.1);
 }
+
 .carousel-btn-prev {
   left: 20px;
 }
+
 .carousel-btn-next {
   right: 20px;
 }
@@ -1604,6 +1622,7 @@
   gap: 8px;
   z-index: 5;
 }
+
 .carousel-dot {
   width: 8px;
   height: 8px;
@@ -1614,6 +1633,7 @@
   padding: 0;
   transition: all 0.3s;
 }
+
 .carousel-dot.active {
   background: var(--pink-hot);
   width: 24px;
@@ -1631,11 +1651,13 @@
   background: rgba(255, 255, 255, 0.1);
   z-index: 5;
 }
+
 .carousel-progress-bar {
   height: 100%;
   background: linear-gradient(to right, var(--pink-hot), var(--blue-sky));
   animation: progressFill 4.5s linear forwards;
 }
+
 @keyframes progressFill {
   from {
     width: 0%;
@@ -1662,23 +1684,36 @@
     padding: 12px 20px;
     gap: 16px;
   }
+
   .social-label {
     display: none;
   }
+
   .social-icon span {
     display: none;
   }
+
   .social-sidebar::after {
     display: none;
   }
+
   .carousel-section {
     padding-right: 0;
     padding-bottom: 70px;
   }
+
   .carousel-wrapper {
     padding: 28px 20px;
   }
+
   .carousel {
     aspect-ratio: 16/9;
   }
+}
+.imagen4 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
 }

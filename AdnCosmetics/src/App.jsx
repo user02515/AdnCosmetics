@@ -7,26 +7,30 @@ import { useEffect, useState, useRef } from "react";
 import Navbar from "./components/Navbar"; // ← componente del equipo
 import Footer from "./components/Footer"; // ← componente del equipo
 import "./App.css";
-
+import imagen1 from "./assets/imagen1.png";
+import imagen2 from "./assets/imagen2.png";
+import imagen3 from "./assets/imagen3.png";
+import imagen4 from "./assets/imagen4.png";
 // ── Imágenes del carrusel — reemplaza src con tus imágenes reales ──
 const slides = [
   {
     id: 1,
-    src: null,
+    src: imagen1,
     label: "Imagen 1",
     caption: "Nueva colección de maquillaje",
     sub: "Hasta 30% de descuento",
   },
   {
     id: 2,
-    src: null,
+    src: imagen2,
     label: "Imagen 2",
     caption: "Skincare premium importado",
     sub: "Productos 100% originales",
   },
   {
     id: 3,
-    src: null,
+
+    src: imagen3,
     label: "Imagen 3",
     caption: "Perfumes internacionales",
     sub: "Fragancias exclusivas",
@@ -387,276 +391,11 @@ export default function App() {
               <div className="img-stack">
                 <div className="img-main">
                   <div className="img-main-inner">
-                    {/* Ilustración SVG mujer con cabello */}
-                    <svg
-                      viewBox="0 0 320 420"
-                      xmlns="http://www.w3.org/2000/svg"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        position: "absolute",
-                        inset: 0,
-                      }}
-                    >
-                      <defs>
-                        <radialGradient id="skinGrad" cx="50%" cy="40%" r="55%">
-                          <stop offset="0%" stopColor="#f5cba7" />
-                          <stop offset="100%" stopColor="#e8a87c" />
-                        </radialGradient>
-                        <radialGradient id="hairGrad" cx="50%" cy="0%" r="90%">
-                          <stop offset="0%" stopColor="#2c1a0e" />
-                          <stop offset="60%" stopColor="#1a0d06" />
-                          <stop offset="100%" stopColor="#0d0600" />
-                        </radialGradient>
-                        <radialGradient
-                          id="hairShine"
-                          cx="35%"
-                          cy="20%"
-                          r="40%"
-                        >
-                          <stop
-                            offset="0%"
-                            stopColor="rgba(255,180,120,0.35)"
-                          />
-                          <stop offset="100%" stopColor="rgba(255,100,60,0)" />
-                        </radialGradient>
-                        <linearGradient
-                          id="dressGrad"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="100%"
-                        >
-                          <stop offset="0%" stopColor="#ff3d8b" />
-                          <stop offset="50%" stopColor="#c4186d" />
-                          <stop offset="100%" stopColor="#1630a8" />
-                        </linearGradient>
-                        <linearGradient
-                          id="svgBgGrad"
-                          x1="0%"
-                          y1="0%"
-                          x2="100%"
-                          y2="100%"
-                        >
-                          <stop offset="0%" stopColor="#0b1560" />
-                          <stop offset="40%" stopColor="#1630a8" />
-                          <stop offset="80%" stopColor="#6b2070" />
-                          <stop offset="100%" stopColor="#c0186e" />
-                        </linearGradient>
-                      </defs>
-                      <rect width="320" height="420" fill="url(#svgBgGrad)" />
-                      <circle
-                        cx="160"
-                        cy="210"
-                        r="130"
-                        fill="rgba(255,61,139,0.07)"
-                      />
-                      <path
-                        d="M 60 340 Q 60 290 80 270 Q 100 255 130 248 L 160 260 L 190 248 Q 220 255 240 270 Q 260 290 260 340 L 260 420 L 60 420 Z"
-                        fill="url(#dressGrad)"
-                        opacity="0.95"
-                      />
-                      <rect
-                        x="143"
-                        y="228"
-                        width="34"
-                        height="28"
-                        rx="8"
-                        fill="url(#skinGrad)"
-                      />
-                      <ellipse
-                        cx="160"
-                        cy="185"
-                        rx="58"
-                        ry="66"
-                        fill="url(#skinGrad)"
-                      />
-                      <ellipse
-                        cx="160"
-                        cy="225"
-                        rx="40"
-                        ry="20"
-                        fill="url(#skinGrad)"
-                      />
-                      <ellipse
-                        cx="103"
-                        cy="188"
-                        rx="9"
-                        ry="13"
-                        fill="#e8a87c"
-                      />
-                      <ellipse
-                        cx="217"
-                        cy="188"
-                        rx="9"
-                        ry="13"
-                        fill="#e8a87c"
-                      />
-                      <ellipse
-                        cx="128"
-                        cy="205"
-                        rx="18"
-                        ry="10"
-                        fill="rgba(255,100,130,0.18)"
-                      />
-                      <ellipse
-                        cx="192"
-                        cy="205"
-                        rx="18"
-                        ry="10"
-                        fill="rgba(255,100,130,0.18)"
-                      />
-                      <path
-                        d="M 130 166 Q 142 160 154 163"
-                        stroke="#3d1f0a"
-                        strokeWidth="3.5"
-                        fill="none"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M 166 163 Q 178 160 190 166"
-                        stroke="#3d1f0a"
-                        strokeWidth="3.5"
-                        fill="none"
-                        strokeLinecap="round"
-                      />
-                      <ellipse cx="142" cy="182" rx="15" ry="11" fill="white" />
-                      <ellipse cx="178" cy="182" rx="15" ry="11" fill="white" />
-                      <circle cx="142" cy="184" r="9" fill="#2c1a0e" />
-                      <circle cx="178" cy="184" r="9" fill="#2c1a0e" />
-                      <circle cx="142" cy="184" r="5.5" fill="#0d0600" />
-                      <circle cx="178" cy="184" r="5.5" fill="#0d0600" />
-                      <circle
-                        cx="145"
-                        cy="181"
-                        r="2.5"
-                        fill="white"
-                        opacity="0.9"
-                      />
-                      <circle
-                        cx="181"
-                        cy="181"
-                        r="2.5"
-                        fill="white"
-                        opacity="0.9"
-                      />
-                      <ellipse
-                        cx="142"
-                        cy="177"
-                        rx="14"
-                        ry="6"
-                        fill="rgba(255,61,139,0.12)"
-                      />
-                      <ellipse
-                        cx="178"
-                        cy="177"
-                        rx="14"
-                        ry="6"
-                        fill="rgba(255,61,139,0.12)"
-                      />
-                      <path
-                        d="M 160 188 Q 154 200 150 207 Q 155 210 160 209 Q 165 210 170 207 Q 166 200 160 188 Z"
-                        fill="rgba(0,0,0,0.08)"
-                      />
-                      <path
-                        d="M 140 217 Q 147 213 153 215 Q 157 212 160 213 Q 163 212 167 215 Q 173 213 180 217 Q 173 220 160 219 Q 147 220 140 217 Z"
-                        fill="#d4185a"
-                      />
-                      <path
-                        d="M 140 217 Q 150 225 160 226 Q 170 225 180 217 Q 173 220 160 219 Q 147 220 140 217 Z"
-                        fill="#e8206a"
-                      />
-                      <ellipse
-                        cx="157"
-                        cy="221"
-                        rx="8"
-                        ry="3"
-                        fill="rgba(255,150,180,0.4)"
-                      />
-                      <path
-                        d="M 102 148 Q 68 120 60 90 Q 52 55 70 30 Q 90 8 120 5 Q 155 0 185 8 Q 215 15 232 40 Q 252 68 248 100 Q 244 130 218 148"
-                        fill="url(#hairGrad)"
-                        opacity="0.9"
-                      />
-                      <path
-                        d="M 68 160 Q 40 200 32 260 Q 24 320 38 380 Q 50 420 60 420 L 60 340 Q 55 300 62 260 Q 68 220 80 185 Z"
-                        fill="url(#hairGrad)"
-                      />
-                      <path
-                        d="M 252 160 Q 280 200 288 260 Q 296 320 282 380 Q 270 420 260 420 L 260 340 Q 265 300 258 260 Q 252 220 240 185 Z"
-                        fill="url(#hairGrad)"
-                      />
-                      <path
-                        d="M 102 148 Q 96 130 100 110 Q 105 80 120 60 Q 140 38 160 36 Q 180 38 200 60 Q 215 80 220 110 Q 224 130 218 148 Q 195 138 160 136 Q 125 138 102 148 Z"
-                        fill="url(#hairGrad)"
-                      />
-                      <path
-                        d="M 102 148 Q 88 165 84 190 Q 80 215 86 240 Q 72 220 65 195 Q 58 168 68 148 Q 82 140 102 148 Z"
-                        fill="url(#hairGrad)"
-                      />
-                      <path
-                        d="M 218 148 Q 232 165 236 190 Q 240 215 234 240 Q 248 220 255 195 Q 262 168 252 148 Q 238 140 218 148 Z"
-                        fill="url(#hairGrad)"
-                      />
-                      <path
-                        d="M 62 220 Q 44 250 40 290 Q 36 330 45 370"
-                        stroke="rgba(80,40,10,0.5)"
-                        strokeWidth="2.5"
-                        fill="none"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M 258 220 Q 276 250 280 290 Q 284 330 275 370"
-                        stroke="rgba(80,40,10,0.5)"
-                        strokeWidth="2.5"
-                        fill="none"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M 102 148 Q 108 120 120 95 Q 130 72 145 58"
-                        stroke="rgba(255,61,139,0.15)"
-                        strokeWidth="8"
-                        fill="none"
-                        strokeLinecap="round"
-                      />
-                      <path
-                        d="M 218 148 Q 212 120 200 95 Q 190 72 175 58"
-                        stroke="rgba(78,120,255,0.12)"
-                        strokeWidth="6"
-                        fill="none"
-                        strokeLinecap="round"
-                      />
-                      <circle
-                        cx="135"
-                        cy="52"
-                        r="2"
-                        fill="rgba(255,200,150,0.6)"
-                      />
-                      <circle
-                        cx="200"
-                        cy="58"
-                        r="2"
-                        fill="rgba(255,200,150,0.55)"
-                      />
-                      <text
-                        x="44"
-                        y="130"
-                        fontSize="12"
-                        fill="rgba(255,61,139,0.7)"
-                        textAnchor="middle"
-                      >
-                        ✦
-                      </text>
-                      <text
-                        x="276"
-                        y="110"
-                        fontSize="10"
-                        fill="rgba(78,120,255,0.6)"
-                        textAnchor="middle"
-                      >
-                        ✦
-                      </text>
-                    </svg>
+                    <img
+                      src={imagen4}
+                      alt="Modelo VDN Cosmetics"
+                      className="imagen4"
+                    />
                   </div>
                 </div>
                 <div className="float-badge">
