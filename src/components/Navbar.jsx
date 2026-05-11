@@ -8,11 +8,11 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const navLinks = [
-  { label: "Inicio",              to: "/",                section: null },
-  { label: "Categorías",          to: "/#categorias",      section: "categorias" },
-  { label: "Productos",           to: "/#productos",      section: "productos" },
-  { label: "Marcas",              to: "/#marcas",         section: "marcas" },
-  { label: "Acerca de Nosotros",  to: "/sobre-nosotros",  section: null },
+  { label: "Inicio",             to: "/",                section: null },
+  { label: "Categorías",         to: "/categorias",     section: null },
+  { label: "Productos",          to: "/#productos",     section: "productos" },
+  { label: "Marcas",             to: "/#marcas",        section: "marcas" },
+  { label: "Acerca de Nosotros", to: "/sobre-nosotros", section: null },
 ];
 
 export default function Navbar() {

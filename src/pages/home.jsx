@@ -6,6 +6,7 @@
 import { useEffect, useState, useRef } from "react";
 import Navbar from "../components/Navbar.jsx"; // ← componente del equipo
 import Footer from "../components/Footer.jsx"; // ← componente del equipo
+import Categorias from "./Categorias.jsx";
 import imagen1 from "../assets/imagen1.png";
 import imagen2 from "../assets/imagen2.png";
 import imagen3 from "../assets/imagen3.png";
@@ -542,89 +543,9 @@ export default function Home() {
                 </section>
 
                 {/* ══════════════════════════════════════
-            CATEGORÍAS
+            CATEGORÍAS — componente Categorias.jsx
         ══════════════════════════════════════ */}
-                <section className="cats-section" id="productos">
-                    <div className="cats-header reveal">
-                        <span
-                            className="section-eyebrow"
-                            style={{ WebkitTextFillColor: "transparent" }}
-                        >
-                            Nuestro Catálogo
-                        </span>
-                        <h2>
-                            Todo lo que tu <span>piel merece</span>
-                        </h2>
-                        <p>Líneas completas de belleza, importadas con cuidado para ti</p>
-                    </div>
-                    <div className="bento">
-                        {[
-                            {
-                                g: "g1",
-                                tag: "Bestseller",
-                                tagType: "",
-                                emoji: "💄",
-                                title: "Maquillaje",
-                                desc: "Bases, labiales, sombras, correctores y más",
-                            },
-                            {
-                                g: "g2",
-                                tag: "Premium",
-                                tagType: "blue",
-                                emoji: "🧴",
-                                title: "Skincare",
-                                desc: "Hidratantes, serums y tratamientos",
-                            },
-                            {
-                                g: "g3",
-                                tag: "",
-                                tagType: "",
-                                emoji: "🌸",
-                                title: "Perfumes",
-                                desc: "Fragancias exclusivas",
-                            },
-                            {
-                                g: "g4",
-                                tag: "",
-                                tagType: "",
-                                emoji: "💅",
-                                title: "Nail Art",
-                                desc: "Esmaltes, geles y accesorios",
-                            },
-                            {
-                                g: "g5",
-                                tag: "",
-                                tagType: "",
-                                emoji: "💇",
-                                title: "Cuidado Capilar",
-                                desc: "Shampoos, mascarillas y aceites",
-                            },
-                            {
-                                g: "g6",
-                                tag: "",
-                                tagType: "",
-                                emoji: "✨",
-                                title: "Accesorios",
-                                desc: "Pinceles, esponjas, herramientas",
-                            },
-                        ].map((c, i) => (
-                            <div key={i} className="bento-card reveal">
-                                <div className="bc-bg">
-                                    <div className={`bc-gradient ${c.g}`} />
-                                </div>
-                                <div className="bc-overlay" />
-                                {c.tag && (
-                                    <span className={`bc-tag ${c.tagType}`}>{c.tag}</span>
-                                )}
-                                <div className="bc-info">
-                                    <span className="bc-emoji">{c.emoji}</span>
-                                    <h3>{c.title}</h3>
-                                    <p>{c.desc}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
+                <Categorias />
 
                 {/* ══════════════════════════════════════
             POR QUÉ ELEGIRNOS
