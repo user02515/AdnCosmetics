@@ -1,0 +1,160 @@
+/* ─────────────────────────────
+   BASE
+──────────────────────────── */
+.brands-page-wrapper {
+  background: var(--off-white);
+  min-height: 100vh;
+}
+
+/* ─────────────────────────────
+   HERO
+──────────────────────────── */
+.brands-hero {
+  position: relative;
+  padding: 160px 7% 90px;
+  background: #07091f;
+  text-align: center;
+  overflow: hidden;
+}
+
+.brands-hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 30%, rgba(255,61,139,0.25), transparent 55%),
+    radial-gradient(circle at 80% 50%, rgba(37,71,224,0.25), transparent 60%),
+    radial-gradient(circle at 50% 90%, rgba(255,128,181,0.12), transparent 60%);
+}
+
+.brands-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.brands-hero h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(48px, 6vw, 90px);
+  color: white;
+  line-height: 1;
+}
+
+.brands-hero h1 em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--pink-hot), var(--blue-vivid));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brands-hero p {
+  margin-top: 18px;
+  font-size: 16px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.6;
+}
+
+/* ─────────────────────────────
+   SECTION
+──────────────────────────── */
+.brands-section {
+  padding: 100px 7%;
+}
+
+/* ─────────────────────────────
+   GRID
+──────────────────────────── */
+.brands-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 30px;
+  align-items: stretch;
+}
+
+/* ─────────────────────────────
+   BRAND CARD BASE (por si no está estilado)
+──────────────────────────── */
+.brand-card {
+  background: white;
+  border-radius: 22px;
+  overflow: hidden;
+
+  transition: all 0.4s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+
+  position: relative;
+}
+
+.brand-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 25px 60px rgba(37,71,224,0.15);
+}
+
+/* borde glow */
+.brand-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  padding: 1px;
+  background: linear-gradient(135deg, var(--pink-hot), var(--blue-vivid));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.brand-card:hover::before {
+  opacity: 1;
+}
+
+/* imagen logo */
+.brand-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: contain;
+  padding: 20px;
+  background: #fff;
+}
+
+/* info */
+.brand-card-content {
+  padding: 18px;
+  text-align: center;
+}
+
+.brand-card h3 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 20px;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.brand-card p {
+  font-size: 13px;
+  color: #777;
+  line-height: 1.5;
+}
+
+/* ─────────────────────────────
+   RESPONSIVE
+──────────────────────────── */
+@media (max-width: 768px) {
+  .brands-hero {
+    padding: 120px 6% 70px;
+  }
+
+  .brands-grid {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 30px;
+
+    align-items: center;
+  }
+}

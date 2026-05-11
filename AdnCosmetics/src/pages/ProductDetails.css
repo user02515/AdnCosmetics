@@ -1,0 +1,131 @@
+.detail-page {
+  display: flex;
+  gap: 50px;
+  align-items: flex-start;
+  padding: 140px 50px 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* =========================
+   IMAGEN
+========================= */
+
+.detail-image img {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 25px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  transition: transform 0.4s ease;
+}
+
+.detail-image img:hover {
+  transform: scale(1.03);
+}
+
+/* =========================
+   INFO
+========================= */
+
+.detail-info {
+  flex: 1;
+  text-align: left;
+}
+
+/* BRAND TAG */
+.detail-brand {
+  display: inline-block;
+  background: rgba(255, 61, 139, 0.08);
+  border: 1px solid rgba(255, 61, 139, 0.2);
+
+  color: #ff80b5;
+  padding: 8px 16px;
+  border-radius: 999px;
+
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+/* TITULO */
+.detail-info h1 {
+  margin-top: 20px;
+  margin-bottom: 15px;
+
+  font-family: "Cormorant Garamond", serif;
+  font-size: 3rem;
+
+  background: linear-gradient(
+    135deg,
+    #ff3d8b,
+    #2547e0
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* PRECIO */
+.detail-price {
+  font-size: 2rem;
+  font-weight: 700;
+
+  background: linear-gradient(
+    135deg,
+    #ff3d8b,
+    #7aa0ff
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  margin-bottom: 20px;
+}
+
+/* SUBTITULOS */
+.detail-info h3 {
+  margin-top: 25px;
+  margin-bottom: 10px;
+
+  color: #1d2ead;
+  font-weight: 700;
+}
+
+/* TEXTO */
+.detail-info p {
+  line-height: 1.8;
+
+  color: #555;
+  font-weight: 300;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+  .detail-page {
+    flex-direction: column;
+    align-items: center;
+    padding: 120px 25px 25px;
+  }
+
+  .detail-image img {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+  }
+
+  .detail-info {
+    text-align: center;
+  }
+
+  .detail-info h1 {
+    font-size: 2rem;
+  }
+
+  .detail-price {
+    font-size: 1.5rem;
+  }
+}

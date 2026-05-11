@@ -161,7 +161,7 @@
   font-size: clamp(52px, 7.5vw, 96px);
   font-weight: 700;
   line-height: 0.95;
-  color: var(--white);
+  color: var(--dark);
   margin-bottom: 28px;
   animation: fadeUp 0.9s ease both 0.25s;
 }
