@@ -4,7 +4,7 @@
 
   align-items: flex-start;
 
-  padding: 50px;
+  padding: 140px 50px 50px;
 
   max-width: 1200px;
   margin: 0 auto;
@@ -37,23 +37,28 @@
 }
 
 .detail-brand {
-  background: #ffffff;
-  
-  color: #e8186d;
+  background: rgba(255, 255, 255, 0.08);
+
+  color: #ff80b5;
 
   padding: 8px 15px;
 
   border-radius: 20px;
 
   font-weight: 600;
+
+  border: 1px solid rgba(255,255,255,0.1);
 }
 
 .detail-info h1 {
   margin-top: 20px;
   margin-bottom: 15px;
+
   font-family: "Cormorant Garamond", serif;
+
   font-size: 3rem;
-  color: #0b1560;
+
+  color: white;
 }
 
 .detail-price {
@@ -73,11 +78,12 @@
   margin-top: 25px;
   margin-bottom: 10px;
 
-  color: #0b1560;
+  color: white;
 }
 
 .detail-info p {
   line-height: 1.7;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* =========================
@@ -87,12 +93,11 @@
 @media (max-width: 768px) {
 
   .detail-page {
-
     flex-direction: column;
 
     align-items: center;
 
-    padding: 25px;
+    padding: 120px 25px 25px;
   }
 
   .detail-image img {
