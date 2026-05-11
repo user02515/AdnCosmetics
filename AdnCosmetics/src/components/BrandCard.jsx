@@ -2,9 +2,7 @@ import "./BrandCards.css";
 function BrandCard({ brand }) {
   return (
     <div className="brand-card">
-        <div className="brand-name">
-            <h2>{brand.name}</h2>
-        </div>
+        
 
       <div className="brand-logo">
         <img

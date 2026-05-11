@@ -7,7 +7,7 @@ export const products = [
     category: "Hair Styling",
     price: 35,
 
-    image: "/images/Aqua Net 14onz.jpg",
+    image: "/images/AN-14.jpg",
 
     description:
       "Laca de fijación extra fuerte para peinados duraderos.",
@@ -26,7 +26,7 @@ export const products = [
     category: "Hair Styling",
     price: 18,
 
-    image: "/images/Aqua-Net 5onz.avif",
+    image: "/images/AN-5.webp",
 
     description:
       "Laca de fijación fuerte en formato compacto y portátil.",
@@ -45,7 +45,7 @@ export const products = [
     category: "Hair Styling",
     price: 15,
 
-    image: "/images/Aqua-Net 4onz.jpg",
+    image: "/images/AN-4.avif",
 
     description:
       "Laca ligera de fijación media para control natural del cabello.",
