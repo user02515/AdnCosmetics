@@ -7,6 +7,9 @@ import Home from './pages/home.jsx'
 function App() {
   return (
     <>
+      
+
+      {/* ── NAVBAR — importado del equipo ── */}
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

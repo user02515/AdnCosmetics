@@ -9,7 +9,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const navLinks = [
   { label: "Inicio",              to: "/",                section: null },
-  { label: "Categorías",          to: "/#productos",      section: "productos" },
+  { label: "Categorías",          to: "/#categorias",      section: "categorias" },
+  { label: "Productos",           to: "/#productos",      section: "productos" },
   { label: "Marcas",              to: "/#marcas",         section: "marcas" },
   { label: "Acerca de Nosotros",  to: "/sobre-nosotros",  section: null },
 ];
@@ -192,9 +193,15 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <button className="vdn-nav-pill" onClick={handleCotizar}>
-          Cotizar →
-        </button>
+        {/* Botón WhatsApp */}
+        <a
+          className="vdn-nav-pill"
+          href="https://wa.me/59171234567"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WhatsApp →
+        </a>
 
         <button
           className="vdn-hamburger"
@@ -217,13 +224,17 @@ export default function Navbar() {
             {link.label}
           </a>
         ))}
-        <button
+
+        {/* Botón WhatsApp Mobile */}
+        <a
           className="vdn-nav-pill"
           style={{ alignSelf: "flex-start", marginTop: 8 }}
-          onClick={handleCotizar}
+          href="https://wa.me/59171234567"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          Cotizar →
-        </button>
+          WhatsApp →
+        </a>
       </div>
     </>
   );
