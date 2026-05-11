@@ -1,0 +1,61 @@
+/* ── VDN Cosmetics — Estilos globales ── */
+
+:root {
+  --pink-hot: #ff3d8b;
+  --pink-mid: #e8186d;
+  --pink-soft: #ff80b5;
+  --pink-pale: #ffe0ef;
+  --pink-blush: #fdf0f6;
+  --blue-deep: #0b1560;
+  --blue-mid: #1630a8;
+  --blue-vivid: #2547e0;
+  --blue-sky: #4e78ff;
+  --blue-glow: #7aa0ff;
+  --white: #ffffff;
+  --off-white: #fdfafe;
+  --dark: #07091f;
+  --gold: #ffd166;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--off-white);
+  color: var(--dark);
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  border-inline: 1px solid var(--border);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Reveal on scroll */
+.reveal {
+  opacity: 0;
+  transform: translateY(36px);
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
