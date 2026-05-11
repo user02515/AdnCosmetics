@@ -4,21 +4,32 @@
 //  Uso: <Footer />
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+import { Link, useNavigate, useLocation } from "react-router-dom";
+
 const footerLinks = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Categorías", href: "#productos" },
-  { label: "Marcas", href: "#marcas" },
-  { label: "Acerca de Nosotros", href: "#nosotros" },
-  { label: "Contacto", href: "#contacto" },
+  { label: "Inicio",              to: "/",               section: null },
+  { label: "Categorías",          to: "/#productos",     section: "productos" },
+  { label: "Marcas",              to: "/#marcas",        section: "marcas" },
+  { label: "Acerca de Nosotros",  to: "/sobre-nosotros", section: null },
+  { label: "Contacto",            to: "/#contacto",      section: "contacto" },
 ];
 
 export default function Footer() {
-  const scrollTo = (href) => {
-    const el = document.querySelector(href);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
+  const navigate = useNavigate();
+  const location = useLocation();
   const year = new Date().getFullYear();
+
+  const handleLinkClick = (e, link) => {
+    e.preventDefault();
+
+    // Si tiene sección y ya estamos en el index, scroll directo
+    if (link.section && location.pathname === "/") {
+      const el = document.getElementById(link.section);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    } else {
+      navigate(link.to);
+    }
+  };
 
   return (
     <>
@@ -38,7 +49,6 @@ export default function Footer() {
           box-sizing: border-box;
         }
 
-        /* ── Fila superior ── */
         .vdn-footer-top {
           display: flex;
           align-items: flex-start;
@@ -48,7 +58,6 @@ export default function Footer() {
           margin-bottom: 40px;
         }
 
-        /* Marca */
         .vdn-footer-brand-text {
           font-family: 'Cormorant Garamond', serif;
           font-size: 28px; font-weight: 700;
@@ -66,14 +75,13 @@ export default function Footer() {
           margin-top: 14px; max-width: 240px; line-height: 1.6;
         }
 
-        /* Links */
         .vdn-footer-links-title {
           font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
           color: rgba(255,255,255,0.2); margin-bottom: 16px; font-weight: 600;
         }
         .vdn-footer-links {
-          display: flex; flex-direction: column; gap: 10px; list-style: none;
-          padding: 0; margin: 0;
+          display: flex; flex-direction: column; gap: 10px;
+          list-style: none; padding: 0; margin: 0;
         }
         .vdn-footer-links a {
           color: rgba(255,255,255,0.35); text-decoration: none;
@@ -82,21 +90,16 @@ export default function Footer() {
         }
         .vdn-footer-links a:hover { color: var(--pink-soft); }
 
-        /* Contacto */
         .vdn-footer-contact-title {
           font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
           color: rgba(255,255,255,0.2); margin-bottom: 16px; font-weight: 600;
         }
         .vdn-footer-contact-item {
-          display: flex; align-items: center; gap: 10px;
-          margin-bottom: 10px;
+          display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
         }
         .vdn-footer-contact-item .icon { font-size: 14px; }
-        .vdn-footer-contact-item span {
-          font-size: 13px; color: rgba(255,255,255,0.35);
-        }
+        .vdn-footer-contact-item span { font-size: 13px; color: rgba(255,255,255,0.35); }
 
-        /* ── Línea separadora ── */
         .vdn-footer-divider {
           width: 100%; height: 1px;
           background: linear-gradient(
@@ -109,32 +112,24 @@ export default function Footer() {
           margin-bottom: 28px;
         }
 
-        /* ── Fila inferior ── */
         .vdn-footer-bottom {
-          display: flex;
-          align-items: center;
+          display: flex; align-items: center;
           justify-content: space-between;
-          flex-wrap: wrap;
-          gap: 16px;
+          flex-wrap: wrap; gap: 16px;
         }
-        .vdn-footer-copy {
-          font-size: 12px; color: rgba(255,255,255,0.18);
-        }
+        .vdn-footer-copy { font-size: 12px; color: rgba(255,255,255,0.18); }
         .vdn-footer-badge {
           display: inline-flex; align-items: center; gap: 8px;
           background: rgba(255,61,139,0.08);
           border: 1px solid rgba(255,61,139,0.2);
           padding: 6px 16px; border-radius: 100px;
-          font-size: 11px; color: rgba(255,255,255,0.3);
-          letter-spacing: 1px;
+          font-size: 11px; color: rgba(255,255,255,0.3); letter-spacing: 1px;
         }
         .vdn-footer-badge::before {
           content: ''; width: 6px; height: 6px; border-radius: 50%;
-          background: var(--pink-hot);
-          box-shadow: 0 0 6px var(--pink-hot);
+          background: var(--pink-hot); box-shadow: 0 0 6px var(--pink-hot);
         }
 
-        /* ── Responsive ── */
         @media (max-width: 768px) {
           .vdn-footer { padding: 40px 24px; }
           .vdn-footer-top { flex-direction: column; gap: 32px; }
@@ -143,13 +138,14 @@ export default function Footer() {
       `}</style>
 
       <footer className="vdn-footer">
-        {/* Fila superior */}
         <div className="vdn-footer-top">
           {/* Columna 1: Marca */}
           <div>
-            <div className="vdn-footer-brand-text">
-              <span>VDN</span> Cosmetics
-            </div>
+            <Link to="/" style={{ textDecoration: "none" }}>
+              <div className="vdn-footer-brand-text">
+                <span>VDN</span> Cosmetics
+              </div>
+            </Link>
             <div className="vdn-footer-brand-sub">Import &amp; Export</div>
             <p className="vdn-footer-brand-desc">
               Importadora de cosméticos premium. Productos 100% originales para
@@ -162,13 +158,10 @@ export default function Footer() {
             <div className="vdn-footer-links-title">Navegación</div>
             <ul className="vdn-footer-links">
               {footerLinks.map((link) => (
-                <li key={link.href}>
+                <li key={link.to}>
                   <a
-                    href={link.href}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      scrollTo(link.href);
-                    }}
+                    href={link.to}
+                    onClick={(e) => handleLinkClick(e, link)}
                   >
                     {link.label}
                   </a>
@@ -195,10 +188,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Divisor */}
         <div className="vdn-footer-divider" />
 
-        {/* Fila inferior */}
         <div className="vdn-footer-bottom">
           <p className="vdn-footer-copy">
             © {year} VDN Cosmetics Import &amp; Export · La Paz, Bolivia
