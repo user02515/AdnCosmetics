@@ -67,7 +67,7 @@ body {
 
   background: var(--off-white);
 
-  color: var(--dark);
+  color: var(--pink-blush);
 
   font-family: var(--sans);
 
@@ -191,8 +191,8 @@ code,
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --off-white: #16171d;
-    --dark: #f3f4f6;
+    --dark: #16171d;
+    --off-white: #f3f4f6;
   }
 
   body {

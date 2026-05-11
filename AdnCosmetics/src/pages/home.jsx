@@ -164,10 +164,18 @@ export default function Home() {
       <Navbar />
 
       <main>
-        <section className="hero" id="inicio">
-          <h1>VDN Cosmetics</h1>
-          <p>Tu belleza sin fronteras</p>
-        </section>
+        
+        <section className="page-hero">
+        <div className="page-hero-bg"></div>
+        <div className="hero-grid-lines"></div>
+        <div className="page-hero-blob phb1"></div>
+        <div className="page-hero-blob phb2"></div>
+        <div className="page-hero-content">
+          <h1>VDN<br /><em>Cosmetics</em></h1>
+          <div className="page-hero-line"></div>
+        </div>
+      </section>
+
 
         <section id="productos">
           <CarouselSlider />
