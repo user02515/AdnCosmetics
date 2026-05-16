@@ -92,6 +92,18 @@ export default function EditCarousel() {
     setSlides(updated);
     setSaved(false);
   };
+  const moveSlide = (index, direction) => {
+    const updated = [...slides];
+
+    const newIndex = index + direction;
+
+    if (newIndex < 0 || newIndex >= slides.length) return;
+
+    [updated[index], updated[newIndex]] = [updated[newIndex], updated[index]];
+
+    setSlides(updated);
+    setSaved(false);
+  };
 
   const handleSaveAndGoHome = () => {
     saveToStorage(slides);
@@ -211,6 +223,23 @@ export default function EditCarousel() {
                     placeholder="Subtitulo"
                   />
                 </div>
+                <div className="order-buttons">
+                  <button
+                    className="move-btn"
+                    onClick={() => moveSlide(idx, -1)}
+                    disabled={idx === 0}
+                  >
+                    ↑
+                  </button>
+
+                  <button
+                    className="move-btn"
+                    onClick={() => moveSlide(idx, 1)}
+                    disabled={idx === slides.length - 1}
+                  >
+                    ↓
+                  </button>
+                </div>
 
                 <button
                   className="delete-btn"
@@ -227,7 +256,7 @@ export default function EditCarousel() {
               className={`save-footer-btn ${!saved ? "save-footer-btn--pending" : ""}`}
               onClick={handleSaveAndGoHome}
             >
-              {!saved ? "💾 Guardar cambios y volver al inicio" : "✓ Todo guardado — Volver al inicio"}
+              {!saved ? " Guardar cambios y volver al inicio" : "✓ Todo guardado — Volver al inicio"}
             </button>
           </div>
         </>
