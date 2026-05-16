@@ -7,11 +7,11 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
 const footerLinks = [
-  { label: "Inicio",              to: "/",               section: null },
-  { label: "Categorías",          to: "/#productos",     section: "productos" },
-  { label: "Marcas",              to: "/#marcas",        section: "marcas" },
-  { label: "Acerca de Nosotros",  to: "/sobre-nosotros", section: null },
-  { label: "Contacto",            to: "/#contacto",      section: "contacto" },
+  { label: "Inicio",             to: "/",               section: null },
+  { label: "Categorías",         to: "/#productos",     section: "productos" },
+  { label: "Marcas",             to: "/#marcas",        section: "marcas" },
+  { label: "Acerca de Nosotros", to: "/sobre-nosotros", section: null },
+  { label: "Contacto",           to: "/#contacto",      section: "contacto" },
 ];
 
 export default function Footer() {
@@ -21,8 +21,6 @@ export default function Footer() {
 
   const handleLinkClick = (e, link) => {
     e.preventDefault();
-
-    // Si tiene sección y ya estamos en el index, scroll directo
     if (link.section && location.pathname === "/") {
       const el = document.getElementById(link.section);
       if (el) el.scrollIntoView({ behavior: "smooth" });
@@ -118,6 +116,7 @@ export default function Footer() {
           flex-wrap: wrap; gap: 16px;
         }
         .vdn-footer-copy { font-size: 12px; color: rgba(255,255,255,0.18); }
+
         .vdn-footer-badge {
           display: inline-flex; align-items: center; gap: 8px;
           background: rgba(255,61,139,0.08);
@@ -130,10 +129,28 @@ export default function Footer() {
           background: var(--pink-hot); box-shadow: 0 0 6px var(--pink-hot);
         }
 
+        /* ── Link discreto de acceso admin ── */
+        .vdn-footer-admin-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 11px;
+          color: rgba(255,255,255,0.15);
+          text-decoration: none;
+          letter-spacing: 0.5px;
+          transition: color 0.3s;
+        }
+        .vdn-footer-admin-link:hover {
+          color: rgba(255,255,255,0.4);
+        }
+        .vdn-footer-admin-link .admin-icon {
+          font-size: 11px;
+        }
+
         @media (max-width: 768px) {
           .vdn-footer { padding: 40px 24px; }
           .vdn-footer-top { flex-direction: column; gap: 32px; }
-          .vdn-footer-bottom { flex-direction: column; text-align: center; }
+          .vdn-footer-bottom { flex-direction: column; text-align: center; align-items: center; }
         }
       `}</style>
 
@@ -159,10 +176,7 @@ export default function Footer() {
             <ul className="vdn-footer-links">
               {footerLinks.map((link) => (
                 <li key={link.to}>
-                  <a
-                    href={link.to}
-                    onClick={(e) => handleLinkClick(e, link)}
-                  >
+                  <a href={link.to} onClick={(e) => handleLinkClick(e, link)}>
                     {link.label}
                   </a>
                 </li>
@@ -194,7 +208,14 @@ export default function Footer() {
           <p className="vdn-footer-copy">
             © {year} VDN Cosmetics Import &amp; Export · La Paz, Bolivia
           </p>
+
           <div className="vdn-footer-badge">Productos 100% Originales</div>
+
+          {/* Acceso admin — discreto, solo para quien lo busca */}
+          <Link to="/admin/login" className="vdn-footer-admin-link">
+            <span className="admin-icon">🔒</span>
+            ¿Eres administrador? Inicia sesión aquí
+          </Link>
         </div>
       </footer>
     </>

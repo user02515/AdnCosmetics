@@ -10,7 +10,7 @@ import Categoria from './pages/Categorias.jsx'
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import Brands from "./pages/Brands";
-
+import AdminLogin from './pages/adminlogin.jsx'
 
 
 function App() {
@@ -28,6 +28,7 @@ function App() {
         <Route path="/productos" element={<Products />} />
         <Route path="/producto/:id" element={<ProductDetail />} />
         <Route path="/marcas" element={<Brands />} />
+        <Route path='/admin/login' element={<AdminLogin />} />
       </Routes>
 
       <Footer />
