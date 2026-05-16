@@ -1,5 +1,5 @@
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//  App.jsx — VDN Cosmetics
+//  Home.jsx — VDN Cosmetics
 //  Importa: Navbar y Footer del equipo
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -12,355 +12,177 @@ import imagen2 from "../assets/imagen2.png";
 import imagen3 from "../assets/imagen3.png";
 import imagen4 from "../assets/imagen4.png";
 
+import "../styles/App.css";
 
-import "../styles/App.css"
-
-// ── Imágenes del carrusel — reemplaza src con tus imágenes reales ──
+// ── Slides del carrusel ──
 const slides = [
-    {
-        id: 1,
-        src: imagen1,
-        label: "Imagen 1",
-        caption: "Nueva colección de maquillaje",
-        sub: "Hasta 30% de descuento",
-    },
-    {
-        id: 2,
-        src: imagen2,
-        label: "Imagen 2",
-        caption: "Skincare premium importado",
-        sub: "Productos 100% originales",
-    },
-    {
-        id: 3,
-
-        src: imagen3,
-        label: "Imagen 3",
-        caption: "Perfumes internacionales",
-        sub: "Fragancias exclusivas",
-    },
-    {
-        id: 4,
-        src: null,
-        label: "Imagen 4",
-        caption: "Venta mayorista disponible",
-        sub: "Precio especial para distribuidoras",
-    },
+  {
+    id: 1,
+    src: imagen1,
+    label: "Imagen 1",
+    caption: "Nueva colección de maquillaje",
+    sub: "Hasta 30% de descuento",
+  },
+  {
+    id: 2,
+    src: imagen2,
+    label: "Imagen 2",
+    caption: "Skincare premium importado",
+    sub: "Productos 100% originales",
+  },
+  {
+    id: 3,
+    src: imagen3,
+    label: "Imagen 3",
+    caption: "Perfumes internacionales",
+    sub: "Fragancias exclusivas",
+  },
+  {
+    id: 4,
+    src: null,
+    label: "Imagen 4",
+    caption: "Venta mayorista disponible",
+    sub: "Precio especial para distribuidoras",
+  },
 ];
 
 function CarouselSlider() {
-    const [current, setCurrent] = useState(0);
-    const [dragging, setDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const timerRef = useRef(null);
+  const [current, setCurrent] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+        const timerRef = useRef(null);          
 
-    const next = () => setCurrent((c) => (c + 1) % slides.length);
-    const prev = () => setCurrent((c) => (c - 1 + slides.length) % slides.length);
+  const next = () => setCurrent((c) => (c + 1) % slides.length);
+  const prev = () => setCurrent((c) => (c - 1 + slides.length) % slides.length);
 
-    const resetTimer = () => {
-        clearInterval(timerRef.current);
-        timerRef.current = setInterval(next, 4500);
-    };
+  const resetTimer = () => {
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(next, 4500);
+  };
 
-    useEffect(() => {
-        timerRef.current = setInterval(next, 4500);
-        return () => clearInterval(timerRef.current);
-    }, []);
+  useEffect(() => {
+    timerRef.current = setInterval(next, 4500);
+    return () => clearInterval(timerRef.current);
+  }, []);
 
-    const handleDragStart = (e) => {
-        setDragging(true);
-        setStartX(e.clientX || e.touches?.[0]?.clientX);
-    };
-    const handleDragEnd = (e) => {
-        if (!dragging) return;
-        const endX = e.clientX || e.changedTouches?.[0]?.clientX;
-        if (startX - endX > 60) {
-            next();
-            resetTimer();
-        }
-        if (endX - startX > 60) {
-            prev();
-            resetTimer();
-        }
-        setDragging(false);
-    };
+  const handleDragStart = (e) => {
+    setDragging(true);
+    setStartX(e.clientX || e.touches?.[0]?.clientX);
+  };
 
-    useEffect(() => {
-        const elements = document.querySelectorAll(".reveal");
+  const handleDragEnd = (e) => {
+    if (!dragging) return;
+    const endX = e.clientX || e.changedTouches?.[0]?.clientX;
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("visible");
-                }
-            });
-        });
+    if (startX - endX > 60) {
+      next();
+      resetTimer();
+    }
 
-        elements.forEach((el) => observer.observe(el));
-    }, []);
+    if (endX - startX > 60) {
+      prev();
+      resetTimer();
+    }
 
-    return (
-        <div
-            className="carousel"
-            onMouseDown={handleDragStart}
-            onMouseUp={handleDragEnd}
-            onTouchStart={handleDragStart}
-            onTouchEnd={handleDragEnd}
-        >
-            {/* Slides */}
-            <div
-                className="carousel-slides"
-                style={{ transform: `translateX(-${current * 100}%)` }}
-            >
-                {slides.map((s, i) => (
-                    <div key={s.id} className="carousel-slide">
-                        {/* Si hay imagen real la muestra, si no muestra placeholder */}
-                        {s.src ? (
-                            <img src={s.src} alt={s.label} className="carousel-img" />
-                        ) : (
-                            <div className="carousel-placeholder">
-                                <div className="carousel-placeholder-icon">🖼️</div>
-                                <div className="carousel-placeholder-label">{s.label}</div>
-                                <div className="carousel-placeholder-hint">
-                                    Reemplaza src en el array slides[]
-                                </div>
-                            </div>
-                        )}
-                        {/* Caption sobre la imagen */}
-                        <div className="carousel-caption">
-                            <div className="carousel-caption-num">0{i + 1}</div>
-                            <h3>{s.caption}</h3>
-                            <p>{s.sub}</p>
-                        </div>
-                    </div>
-                ))}
+    setDragging(false);
+  };
+
+  return (
+    <div
+      className="carousel"
+      onMouseDown={handleDragStart}
+      onMouseUp={handleDragEnd}
+      onTouchStart={handleDragStart}
+      onTouchEnd={handleDragEnd}
+    >
+      <div
+        className="carousel-slides"
+        style={{ transform: `translateX(-${current * 100}%)` }}
+      >
+        {slides.map((s, i) => (
+          <div key={s.id} className="carousel-slide">
+            {s.src ? (
+              <img src={s.src} alt={s.label} className="carousel-img" />
+            ) : (
+              <div className="carousel-placeholder">
+                <div>🖼️</div>
+                <div>{s.label}</div>
+                <small>Reemplaza la imagen</small>
+              </div>
+            )}
+
+            <div className="carousel-caption">
+              <div>0{i + 1}</div>
+              <h3>{s.caption}</h3>
+              <p>{s.sub}</p>
             </div>
+          </div>
+        ))}
+      </div>
 
-            {/* Flechas */}
-            <button
-                className="carousel-btn carousel-btn-prev"
-                onClick={() => {
-                    prev();
-                    resetTimer();
-                }}
-                aria-label="Anterior"
-            >
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                >
-                    <polyline points="15 18 9 12 15 6" />
-                </svg>
-            </button>
-            <button
-                className="carousel-btn carousel-btn-next"
-                onClick={() => {
-                    next();
-                    resetTimer();
-                }}
-                aria-label="Siguiente"
-            >
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.5"
-                    strokeLinecap="round"
-                >
-                    <polyline points="9 18 15 12 9 6" />
-                </svg>
-            </button>
+      <button className="carousel-btn carousel-btn-prev" onClick={prev}>
+        ‹
+      </button>
 
-            {/* Dots */}
-            <div className="carousel-dots">
-                {slides.map((_, i) => (
-                    <button
-                        key={i}
-                        className={`carousel-dot ${i === current ? "active" : ""}`}
-                        onClick={() => {
-                            setCurrent(i);
-                            resetTimer();
-                        }}
-                        aria-label={`Slide ${i + 1}`}
-                    />
-                ))}
-            </div>
+      <button className="carousel-btn carousel-btn-next" onClick={next}>
+        ›
+      </button>
 
-            {/* Progress bar */}
-            <div className="carousel-progress">
-                <div key={current} className="carousel-progress-bar" />
-            </div>
-        </div>
-    );
+      <div className="carousel-dots">
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            className={i === current ? "active" : ""}
+            onClick={() => setCurrent(i)}
+          />
+        ))}
+      </div>
+    </div>
+  );
 }
 
 export default function Home() {
-    // Cursor personalizado
-    useEffect(() => {
-        const cur = document.getElementById("cur");
-        const ring = document.getElementById("curRing");
-        if (!cur || !ring) return;
-        let mx = 0,
-            my = 0,
-            rx = 0,
-            ry = 0;
-
-        const moveCursor = (e) => {
-            mx = e.clientX;
-            my = e.clientY;
-            cur.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
-        };
-        document.addEventListener("mousemove", moveCursor);
-
-        const animRing = () => {
-            rx += (mx - rx) * 0.12;
-            ry += (my - ry) * 0.12;
-            ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
-            requestAnimationFrame(animRing);
-        };
-        animRing();
-
-        const hoverEls = document.querySelectorAll(
-            "button, a, .bento-card, .c-card, .why-card",
-        );
-        hoverEls.forEach((el) => {
-            el.addEventListener("mouseenter", () => {
-                cur.style.background = "#2547e0";
-                cur.style.transform += " scale(1.8)";
-            });
-            el.addEventListener("mouseleave", () => {
-                cur.style.background = "var(--pink-hot)";
-            });
-        });
-
-        return () => document.removeEventListener("mousemove", moveCursor);
-    }, []);
-
-    // Scroll reveal
-    useEffect(() => {
-        const obs = new IntersectionObserver(
-            (entries) => {
-                entries.forEach((e, i) => {
-                    if (e.isIntersecting)
-                        setTimeout(() => e.target.classList.add("visible"), i * 70);
-                });
-            },
-            { threshold: 0.1 },
-        );
-        document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
-        return () => obs.disconnect();
-    }, []);
-
+  useEffect(() => {
     const scrollTo = (id) =>
-        document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
+      document.querySelector(id)?.scrollIntoView({ behavior: "smooth" });
 
-    return (
-        <>
+    const elements = document.querySelectorAll(".reveal");
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    });
+
+    elements.forEach((el) => observer.observe(el));
+  }, []);
+
+  return (
+    <>
+      <Navbar />
+
+      <main>
+        
+        <section className="page-hero">
+        <div className="page-hero-bg"></div>
+        <div className="hero-grid-lines"></div>
+        <div className="page-hero-blob phb1"></div>
+        <div className="page-hero-blob phb2"></div>
+        <div className="page-hero-content">
+          <h1>VDN<br /><em>Cosmetics</em></h1>
+          <div className="page-hero-line"></div>
+        </div>
+      </section>
 
 
-            <main>
-                {/* ══════════════════════════════════════
-            HERO
-        ══════════════════════════════════════ */}
-                <section className="hero" id="inicio">
-                    <div className="hero-bg" />
-                    <div className="blob blob-1" />
-                    <div className="blob blob-2" />
-                    <div className="blob blob-3" />
-                    <div className="hero-grid" />
-
-                    {/* Anillo orbital */}
-                    <div className="orbit-ring">
-                        <svg
-                            viewBox="0 0 520 520"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <circle
-                                cx="260"
-                                cy="260"
-                                r="250"
-                                stroke="url(#ringGrad)"
-                                strokeWidth="1"
-                                strokeDasharray="8 16"
-                            />
-                            <circle
-                                cx="260"
-                                cy="260"
-                                r="180"
-                                stroke="rgba(255,61,139,0.15)"
-                                strokeWidth="1"
-                            />
-                            <circle cx="260" cy="10" r="6" fill="#ff3d8b" />
-                            <circle cx="510" cy="260" r="4" fill="#4e78ff" />
-                            <circle cx="260" cy="510" r="5" fill="rgba(255,128,181,0.6)" />
-                            <defs>
-                                <linearGradient id="ringGrad" x1="0" y1="0" x2="520" y2="520">
-                                    <stop offset="0%" stopColor="rgba(255,61,139,0.4)" />
-                                    <stop offset="50%" stopColor="rgba(37,71,224,0.4)" />
-                                    <stop offset="100%" stopColor="rgba(255,61,139,0.4)" />
-                                </linearGradient>
-                            </defs>
-                        </svg>
-                    </div>
-
-                    <div className="hero-content">
-                        <div className="hero-tag">
-                            <div className="hero-tag-dot" />
-                            <span>Importadora de Cosméticos · Bolivia</span>
-                        </div>
-                        <h1>
-                            Tu belleza,
-                            <br />
-                            <span className="line2">sin fronteras</span>
-                        </h1>
-                        <p className="hero-desc">
-                            Importamos y exportamos cosméticos premium de las mejores marcas
-                            del mundo. Venta al por mayor y menor. Atención personalizada para
-                            distribuidoras y clientes finales.
-                        </p>
-                        <div className="hero-actions">
-                            <button
-                                className="btn-glow"
-                                onClick={() => scrollTo("#productos")}
-                            >
-                                Ver Catálogo
-                            </button>
-                            <button
-                                className="btn-outline-hero"
-                                onClick={() => scrollTo("#comprar")}
-                            >
-                                Precios Mayorista
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="hero-pills">
-                        <div className="hero-pill">
-                            <span className="hero-pill-icon">💄</span>
-                            <div className="hero-pill-text">
-                                <strong>500+</strong> Productos
-                            </div>
-                        </div>
-                        <div className="hero-pill">
-                            <span className="hero-pill-icon">🌍</span>
-                            <div className="hero-pill-text">
-                                <strong>Importación</strong> Directa
-                            </div>
-                        </div>
-                        <div className="hero-pill">
-                            <span className="hero-pill-icon">🚚</span>
-                            <div className="hero-pill-text">
-                                <strong>Envíos</strong> a Bolivia
-                            </div>
-                        </div>
-                    </div>
+        <section id="productos">
+          <CarouselSlider />
+        </section>
 
                     <div className="scroll-line">Descubrir</div>
-                </section>
+                
 
                 {/* ══════════════════════════════════════
             STRIP ANIMADO
@@ -779,4 +601,3 @@ export default function Home() {
         </>
     );
 }
-

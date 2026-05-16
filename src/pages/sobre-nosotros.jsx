@@ -19,7 +19,7 @@ function ACercaDe() {
     elements.forEach((el) => observer.observe(el));
   }, []);
 
-  
+
 
   return (
     <>
@@ -74,13 +74,15 @@ function ACercaDe() {
 
           <div className="quienes-right reveal">
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+              Somos una tienda especializada en cosméticos y productos de belleza, enfocada en ofrecer marcas de calidad internacional accesibles para el mercado boliviano. Nuestro objetivo es acercar las últimas tendencias en maquillaje y cuidado personal a cada cliente.
             </p>
+
             <p>
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+              Trabajamos con una amplia variedad de productos que van desde maquillaje diario hasta líneas profesionales, asegurando siempre autenticidad, buenos precios y una experiencia de compra confiable tanto para clientes individuales como para negocios.
             </p>
+
             <p>
-              Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet consectetur adipisci velit, sed quia non numquam eius modi tempora incidunt.
+              Nos apasiona la belleza y el bienestar, por eso buscamos brindar no solo productos, sino también asesoría y acompañamiento para que cada persona encuentre lo que mejor se adapta a su estilo y necesidades.
             </p>
             <div className="quienes-highlight">
               <p>"Somos el puente entre las tendencias internacionales de belleza y el mercado boliviano."</p>
@@ -106,7 +108,7 @@ function ACercaDe() {
         <div className="partner-cards">
           <div className="partner-card reveal">
             <div className="pc-img">
-              <img src="https://trabajito.com.bo/uploads/0046/46017/2024/07/09/whatsapp-image-2024-07-09-at-92811-am1.jpeg" alt="nubalogo" style={{ width: '100%', height: '100%', objectFit: 'cover' }}/>
+              <img src="https://trabajito.com.bo/uploads/0046/46017/2024/07/09/whatsapp-image-2024-07-09-at-92811-am1.jpeg" alt="nubalogo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             <div className="pc-body">
               <h3>Nuba Cosmeticos</h3>
@@ -116,8 +118,8 @@ function ACercaDe() {
 
           <div className="partner-card reveal">
             <div className="pc-img">
-              <div className="pc-gradient pg2">  
-              <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Hipermaxi_logo.png" alt="hipermaxiLogo" style={{width: '100%', height: '100%', objectFit: 'cover'}} />
+              <div className="pc-gradient pg2">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Hipermaxi_logo.png" alt="hipermaxiLogo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </div>
             </div>
             <div className="pc-body">
@@ -128,7 +130,7 @@ function ACercaDe() {
 
           <div className="partner-card reveal">
             <div className="pc-img">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTend2lDj6MJcI_1nxFwGGKJ2o3i3NITNhRiA&s" alt="andysLogo" style={{width: '100%', height: '100%', objectFit: 'cover'}}/>
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTend2lDj6MJcI_1nxFwGGKJ2o3i3NITNhRiA&s" alt="andysLogo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             <div className="pc-body">
               <h3>Andy's</h3>
@@ -138,12 +140,11 @@ function ACercaDe() {
 
           <div className="partner-card reveal">
             <div className="pc-img">
-              <div className="pc-gradient pg4"></div>
-              <div className="pc-img-icon">✨</div>
+              <img src="https://images.squarespace-cdn.com/content/v1/5ca2a37c4d546e096b81722a/1686118284085-VDOJYEVAKEJ604J18OH2/YAO.jpg?format=1500w" alt="yaoCosmetics" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             </div>
             <div className="pc-body">
-              <h3>Salones & Spas</h3>
-              <p>Profesionales de la belleza que requieren productos de alta gama para sus servicios, con acceso a líneas premium y skincare especializado.</p>
+              <h3>Yao Yao</h3>
+              <p>Linea de cosméticos de alta calidad.</p>
             </div>
           </div>
         </div>
