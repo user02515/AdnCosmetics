@@ -7,7 +7,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useState } from "react";
 
-const categorias = [
+const categoriasIniciales = [
   {
     id: 1, numero: "01", emoji: "💄",
     titulo: "Maquillaje", subtitulo: "Face & Color",
@@ -228,14 +228,513 @@ const styles = `
     .cats2-right { display: none; }
     .cats2-row { grid-template-columns: 48px 1fr; }
   }
+
+  .cats2-actions {
+    display: flex;
+    gap: 14px;
+
+    margin-top: 18px;
+
+    opacity: 0;
+
+    max-height: 0;
+
+    overflow: hidden;
+
+    transform: translateY(10px);
+
+    transition:
+      opacity 0.35s ease,
+      transform 0.35s ease,
+      max-height 0.35s ease;
+  }
+
+  /* APARECEN DENTRO DEL HOVER */
+  .cats2-row:hover .cats2-actions,
+  .cats2-row.active .cats2-actions {
+    opacity: 1;
+
+    max-height: 80px;
+
+    transform: translateY(0);
+  }
+
+  .cats2-edit-btn,
+  .cats2-delete-btn {
+    border: none;
+
+    padding: 12px 22px;
+
+    border-radius: 14px;
+
+    font-family: 'DM Sans', sans-serif;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+  }
+
+  .cats2-edit-btn {
+    background: linear-gradient(
+      135deg,
+      #2547e0,
+      #4e78ff
+    );
+
+    color: white;
+
+    box-shadow:
+      0 8px 24px rgba(37,71,224,0.25);
+  }
+
+  .cats2-delete-btn {
+    background: linear-gradient(
+      135deg,
+      #ff3d8b,
+      #c1123f
+    );
+
+    color: white;
+
+    box-shadow:
+      0 8px 24px rgba(255,61,139,0.25);
+  }
+
+  .cats2-edit-btn:hover,
+  .cats2-delete-btn:hover {
+    transform: translateY(-3px);
+  }
+
+    .cats2-add-container {
+    display: flex;
+
+    justify-content: center;
+
+    margin-top: 70px;
+  }
+
+  .cats2-add-btn {
+    border: none;
+
+    padding: 18px 34px;
+
+    border-radius: 22px;
+
+    background: linear-gradient(
+      135deg,
+      #ff3d8b,
+      #2547e0
+    );
+
+    color: white;
+
+    font-family: 'DM Sans', sans-serif;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition: all 0.35s ease;
+
+    box-shadow:
+      0 12px 35px rgba(37,71,224,0.18);
+  }
+
+  .cats2-add-btn:hover {
+    transform: translateY(-4px) scale(1.02);
+
+    box-shadow:
+      0 20px 45px rgba(255,61,139,0.22);
+  }
+
+  /* ───────── MODAL ───────── */
+
+  .cats2-modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.45);
+
+    backdrop-filter: blur(6px);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    z-index: 9999;
+  }
+
+  .cats2-modal {
+    width: 100%;
+
+    max-width: 520px;
+
+    background: white;
+
+    border-radius: 28px;
+
+    padding: 36px;
+
+    box-shadow:
+      0 30px 80px rgba(0,0,0,0.18);
+
+    animation: modalIn 0.3s ease;
+  }
+
+  @keyframes modalIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px) scale(.96);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .cats2-modal h3 {
+    font-family: 'Cormorant Garamond', serif;
+
+    font-size: 36px;
+
+    margin-bottom: 24px;
+
+    color: #07091f;
+  }
+
+  .cats2-modal input,
+  .cats2-modal textarea {
+    width: 100%;
+
+    border: 1px solid rgba(0,0,0,0.1);
+
+    border-radius: 16px;
+
+    padding: 16px;
+
+    margin-bottom: 18px;
+
+    font-family: 'DM Sans', sans-serif;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.3s;
+  }
+
+  .cats2-modal input:focus,
+  .cats2-modal textarea:focus {
+    border-color: #ff3d8b;
+
+    box-shadow:
+      0 0 0 4px rgba(255,61,139,0.1);
+  }
+
+  .cats2-modal textarea {
+    min-height: 120px;
+
+    resize: none;
+  }
+
+  .cats2-modal-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 14px;
+
+    margin-top: 12px;
+  }
+
+  .cats2-cancel-btn,
+  .cats2-save-btn {
+    border: none;
+
+    padding: 14px 22px;
+
+    border-radius: 14px;
+
+    cursor: pointer;
+
+    font-weight: 700;
+
+    transition: 0.3s;
+  }
+
+  .cats2-cancel-btn {
+    background: #f2f2f2;
+  }
+
+  .cats2-save-btn {
+    background: linear-gradient(
+      135deg,
+      #ff3d8b,
+      #2547e0
+    );
+
+    color: white;
+  }
+
+  .cats2-save-btn:hover,
+  .cats2-cancel-btn:hover {
+    transform: translateY(-2px);
+  }
+
+  /* MODAL ELIMINAR */
+
+  .cats2-delete-modal {
+    max-width: 420px;
+
+    text-align: center;
+  }
+
+  .cats2-delete-modal p {
+    color: #666;
+
+    line-height: 1.7;
+
+    margin-bottom: 28px;
+  }
+    
 `;
 
 export default function Categorias() {
   const [activa, setActiva] = useState(null);
+  const [mostrarModal, setMostrarModal] = useState(false);
 
+  const [modoEdicion, setModoEdicion] = useState(false);
+
+  const [categoriaActual, setCategoriaActual] = useState(null);
+
+  const [mostrarEliminar, setMostrarEliminar] =
+    useState(false);
+
+  const [idEliminar, setIdEliminar] = useState(null);
+
+  const [formData, setFormData] = useState({
+    titulo: "",
+    subtitulo: "",
+    descripcion: "",
+  });
+  
+  
+  const [categorias, setCategorias] =
+    useState(categoriasIniciales);
+    
+  const eliminarCategoria = (id) => {
+      setCategorias(
+        categorias.filter((cat) => cat.id !== id)
+      );
+    };
+  const editarCategoria = (cat) => {
+
+    setModoEdicion(true);
+
+    setCategoriaActual(cat);
+
+    setFormData({
+      titulo: cat.titulo,
+      subtitulo: cat.subtitulo,
+      descripcion: cat.descripcion,
+    });
+
+    setMostrarModal(true);
+  };
+  const añadirCategoria = () => {
+
+    setModoEdicion(false);
+
+    setFormData({
+      titulo: "",
+      subtitulo: "",
+      descripcion: "",
+    });
+
+    setMostrarModal(true);
+  };
+  const guardarCategoria = () => {
+
+    if (!formData.titulo) return;
+
+    if (modoEdicion) {
+
+      setCategorias(
+        categorias.map((cat) =>
+          cat.id === categoriaActual.id
+            ? {
+                ...cat,
+                titulo: formData.titulo,
+                subtitulo: formData.subtitulo,
+                descripcion: formData.descripcion,
+              }
+            : cat
+        )
+      );
+
+    } else {
+
+      const nuevaCategoria = {
+        id: Date.now(),
+
+        numero: String(categorias.length + 1)
+          .padStart(2, "0"),
+
+        emoji: "✨",
+
+        titulo: formData.titulo,
+
+        subtitulo: formData.subtitulo,
+
+        descripcion: formData.descripcion,
+
+        tags: ["Nuevo"],
+
+        acento: "#ff3d8b",
+
+        acentoClaro:
+          "rgba(255,61,139,0.08)",
+      };
+
+      setCategorias([
+        ...categorias,
+        nuevaCategoria
+      ]);
+    }
+
+    setMostrarModal(false);
+  };
   return (
     <>
       <style>{styles}</style>
+      {/* MODAL AÑADIR / EDITAR */}
+      {mostrarModal && (
+
+        <div className="cats2-modal-overlay">
+
+          <div className="cats2-modal">
+
+            <h3>
+              {modoEdicion
+                ? "Editar Categoría"
+                : "Nueva Categoría"}
+            </h3>
+
+            <input
+              type="text"
+              placeholder="Título"
+              value={formData.titulo}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  titulo: e.target.value
+                })
+              }
+            />
+
+            <input
+              type="text"
+              placeholder="Subtítulo"
+              value={formData.subtitulo}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  subtitulo: e.target.value
+                })
+              }
+            />
+
+            <textarea
+              placeholder="Descripción"
+              value={formData.descripcion}
+              onChange={(e) =>
+                setFormData({
+                  ...formData,
+                  descripcion: e.target.value
+                })
+              }
+            />
+
+            <div className="cats2-modal-actions">
+
+              <button
+                className="cats2-cancel-btn"
+                onClick={() =>
+                  setMostrarModal(false)
+                }
+              >
+                Cancelar
+              </button>
+
+              <button
+                className="cats2-save-btn"
+                onClick={guardarCategoria}
+              >
+                Guardar
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+      )}
+
+      {/* MODAL ELIMINAR */}
+      {mostrarEliminar && (
+
+        <div className="cats2-modal-overlay">
+
+          <div className="cats2-modal cats2-delete-modal">
+
+            <h3>Eliminar</h3>
+
+            <p>
+              ¿Seguro que deseas eliminar esta
+              categoría?
+            </p>
+
+            <div className="cats2-modal-actions">
+
+              <button
+                className="cats2-cancel-btn"
+                onClick={() =>
+                  setMostrarEliminar(false)
+                }
+              >
+                Cancelar
+              </button>
+
+              <button
+                className="cats2-delete-btn"
+                onClick={() => {
+
+                  eliminarCategoria(idEliminar);
+
+                  setMostrarEliminar(false);
+                }}
+              >
+                Eliminar
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+      )}
 
       <section className="cats2-section" id="categorias">
 
@@ -252,71 +751,173 @@ export default function Categorias() {
 
         <div className="cats2-list">
           {categorias.map((cat) => (
-            <div
-              key={cat.id}
-              className={`cats2-row ${activa === cat.id ? "active" : ""}`}
-              onClick={() => setActiva(activa === cat.id ? null : cat.id)}
-              style={{
-                "--acento": cat.acento,
-                "--acentoClaro": cat.acentoClaro,
-              }}
-            >
-              {/* borde izquierdo dinámico */}
-              <style>{`
-                #cat-row-${cat.id}::before { background: ${cat.acento}; }
-                #cat-row-${cat.id}:hover .cats2-arrow,
-                #cat-row-${cat.id}.active .cats2-arrow { background: ${cat.acento}; border-color: ${cat.acento}; }
-                #cat-row-${cat.id}:hover .cats2-emoji-wrap,
-                #cat-row-${cat.id}.active .cats2-emoji-wrap { background: ${cat.acentoClaro}; }
-                #cat-row-${cat.id}:hover .cats2-num,
-                #cat-row-${cat.id}.active .cats2-num { color: ${cat.acento}; }
-                #cat-row-${cat.id}:hover .cats2-titulo,
-                #cat-row-${cat.id}.active .cats2-titulo { color: ${cat.acento}; }
-              `}</style>
+            <div key={cat.id}>
 
-              {/* Número */}
-              <div className="cats2-num" id={`cat-row-${cat.id}`}
-                style={{ "--acento": cat.acento }}>
-                {cat.numero}
-              </div>
+              <div
+                className={`cats2-row ${activa === cat.id ? "active" : ""}`}
+                onClick={() => setActiva(activa === cat.id ? null : cat.id)}
+                style={{
+                  "--acento": cat.acento,
+                  "--acentoClaro": cat.acentoClaro,
+                }}
+              >
 
-              {/* Centro */}
-              <div className="cats2-center">
-                <div className="cats2-title-row">
-                  <span className="cats2-titulo">{cat.titulo}</span>
-                  <span className="cats2-subtitulo">{cat.subtitulo}</span>
+                {/* borde izquierdo dinámico */}
+                <style>{`
+                  #cat-row-${cat.id}::before { background: ${cat.acento}; }
+
+                  #cat-row-${cat.id}:hover .cats2-arrow,
+                  #cat-row-${cat.id}.active .cats2-arrow {
+                    background: ${cat.acento};
+                    border-color: ${cat.acento};
+                  }
+
+                  #cat-row-${cat.id}:hover .cats2-emoji-wrap,
+                  #cat-row-${cat.id}.active .cats2-emoji-wrap {
+                    background: ${cat.acentoClaro};
+                  }
+
+                  #cat-row-${cat.id}:hover .cats2-num,
+                  #cat-row-${cat.id}.active .cats2-num {
+                    color: ${cat.acento};
+                  }
+
+                  #cat-row-${cat.id}:hover .cats2-titulo,
+                  #cat-row-${cat.id}.active .cats2-titulo {
+                    color: ${cat.acento};
+                  }
+                `}</style>
+
+                {/* Número */}
+                <div
+                  className="cats2-num"
+                  id={`cat-row-${cat.id}`}
+                  style={{ "--acento": cat.acento }}
+                >
+                  {cat.numero}
                 </div>
-                <p className="cats2-desc">{cat.descripcion}</p>
 
-                {/* Beneficios — solo para Sprites para Cabello */}
-                {cat.beneficios && (
-                  <div className="cats2-beneficios">
-                    {cat.beneficios.map((b, i) => (
-                      <div key={i} className="cats2-beneficio" style={{ borderColor: cat.acento + "28" }}>
-                        <span className="cats2-beneficio-icono">{b.icono}</span>
-                        <span className="cats2-beneficio-texto">{b.texto}</span>
-                      </div>
+                {/* Centro */}
+                {/* Centro */}
+                <div className="cats2-center">
+
+                  <div className="cats2-title-row">
+                    <span className="cats2-titulo">
+                      {cat.titulo}
+                    </span>
+
+                    <span className="cats2-subtitulo">
+                      {cat.subtitulo}
+                    </span>
+                  </div>
+
+                  <p className="cats2-desc">
+                    {cat.descripcion}
+                  </p>
+
+                  {/* Beneficios */}
+                  {cat.beneficios && (
+                    <div className="cats2-beneficios">
+                      {cat.beneficios.map((b, i) => (
+                        <div
+                          key={i}
+                          className="cats2-beneficio"
+                          style={{
+                            borderColor: cat.acento + "28"
+                          }}
+                        >
+                          <span className="cats2-beneficio-icono">
+                            {b.icono}
+                          </span>
+
+                          <span className="cats2-beneficio-texto">
+                            {b.texto}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <div
+                    className="cats2-tags"
+                    style={{
+                      marginTop: cat.beneficios
+                        ? "12px"
+                        : "0"
+                    }}
+                  >
+                    {cat.tags.map((tag, i) => (
+                      <span
+                        key={i}
+                        className="cats2-tag"
+                        style={{
+                          color: cat.acento,
+                          borderColor: cat.acento + "44",
+                          background: cat.acentoClaro
+                        }}
+                      >
+                        {tag}
+                      </span>
                     ))}
                   </div>
-                )}
 
-                <div className="cats2-tags" style={{ marginTop: cat.beneficios ? "12px" : "0" }}>
-                  {cat.tags.map((tag, i) => (
-                    <span key={i} className="cats2-tag"
-                      style={{ color: cat.acento, borderColor: cat.acento + "44", background: cat.acentoClaro }}>
-                      {tag}
-                    </span>
-                  ))}
+                  {/* BOTONES DENTRO DEL HOVER */}
+                  <div className="cats2-actions">
+
+                    <button
+                      className="cats2-edit-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        editarCategoria(cat);
+                      }}
+                    >
+                      Editar
+                    </button>
+
+                    <button
+                      className="cats2-delete-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+
+                        setIdEliminar(cat.id);
+
+                        setMostrarEliminar(true);
+                      }}
+                    >
+                      Eliminar
+                    </button>
+
+                  </div>
+
                 </div>
+                {/* DERECHA */}
+                <div className="cats2-right">
+
+                  <div className="cats2-emoji-wrap">
+                    {cat.emoji}
+                  </div>
+
+                  <div className="cats2-arrow">
+                    ↗
+                  </div>
+
+                </div>
+
               </div>
 
-              {/* Derecha */}
-              <div className="cats2-right">
-                <div className="cats2-emoji-wrap">{cat.emoji}</div>
-                <div className="cats2-arrow">↗</div>
-              </div>
             </div>
           ))}
+        </div>
+        {/* BOTÓN AÑADIR */}
+        <div className="cats2-add-container">
+
+          <button
+            className="cats2-add-btn"
+            onClick={añadirCategoria}
+          >
+            + Añadir Categoría
+          </button>
+
         </div>
 
       </section>

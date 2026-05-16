@@ -1,26 +1,64 @@
 import { useParams } from "react-router-dom";
-import { products } from "../data/products";
+
+import { useEffect, useState } from "react";
+
+import { products as defaultProducts }
+from "../data/products";
+
 import "./ProductDetails.css";
+
 function ProductDetail() {
 
   const { id } = useParams();
 
-  const product = products.find(
-    (p) => p.id === Number(id)
-  );
+  const [product, setProduct] =
+    useState(null);
+
+  useEffect(() => {
+
+    window.scrollTo(0, 0);
+
+    // productos añadidos
+    const savedProducts =
+      JSON.parse(
+        localStorage.getItem("products")
+      ) || [];
+
+    // unir productos base + añadidos
+    const allProducts = [
+      ...defaultProducts,
+      ...savedProducts
+    ];
+
+    // buscar producto
+    const foundProduct =
+      allProducts.find(
+        (p) => p.id === Number(id)
+      );
+
+    setProduct(foundProduct);
+
+  }, [id]);
 
   if (!product) {
-    return <h1>Producto no encontrado</h1>;
+
+    return (
+      <h1>
+        Producto no encontrado
+      </h1>
+    );
   }
 
   return (
     <div className="detail-page">
 
       <div className="detail-image">
+
         <img
           src={product.image}
           alt={product.name}
         />
+
       </div>
 
       <div className="detail-info">
@@ -29,19 +67,33 @@ function ProductDetail() {
           {product.brand}
         </span>
 
-        <h1>{product.name}</h1>
+        <h1>
+          {product.name}
+        </h1>
 
         <p className="detail-price">
           Bs. {product.price}
         </p>
 
-        <p>{product.description}</p>
+        <p>
+          {product.description}
+        </p>
 
-        <h3>¿Para qué sirve?</h3>
-        <p>{product.use}</p>
+        <h3>
+          ¿Para qué sirve?
+        </h3>
 
-        <h3>Público recomendado</h3>
-        <p>{product.audience}</p>
+        <p>
+          {product.use || "Sin información"}
+        </p>
+
+        <h3>
+          Público recomendado
+        </h3>
+
+        <p>
+          {product.audience || "Sin información"}
+        </p>
 
       </div>
 

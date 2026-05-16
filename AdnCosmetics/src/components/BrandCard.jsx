@@ -7,7 +7,7 @@ function BrandCard({ brand }) {
       <div className="brand-logo">
         <img
           src={brand.logo}
-          alt={brand.name}
+          
         />
       </div>
 

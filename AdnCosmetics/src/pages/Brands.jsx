@@ -1,8 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import BrandCard from "../components/BrandCard";
 import { brands } from "../data/brands";
+import { useEffect, useState } from "react";
 import "./Brands.css";
 
 function Brands() {
+  const [allBrands, setAllBrands] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const savedBrands = JSON.parse(localStorage.getItem("brands")) || [];
+    setAllBrands([...brands, ...savedBrands]);
+  }, []);
+
   return (
     <div className="brands-page-wrapper">
 
@@ -18,24 +28,61 @@ function Brands() {
           </h1>
 
           <p>
-            Trabajamos con marcas reconocidas a nivel mundial para traerte productos auténticos y de calidad premium.
+            Trabajamos con marcas reconocidas a nivel mundial
+            para traerte productos auténticos y de calidad premium.
           </p>
         </div>
       </section>
 
       {/* GRID */}
       <section className="brands-section">
+
         <div className="brands-container">
 
           <div className="brands-grid">
-            {brands.map((brand) => (
-              <BrandCard key={brand.id} brand={brand} />
+
+            {allBrands.map((brand) => (
+              <div className="brand-card-wrapper" key={brand.id}>
+
+                <BrandCard brand={brand} />
+
+                {/* BOTONES (NO TOCAR - HOVER FUNCIONA) */}
+                <div className="brand-actions">
+
+                  <button
+                    className="edit-btn"
+                    onClick={() => navigate(`/marcas/editar/${brand.id}`)}
+                  >
+                    Editar
+                  </button>
+
+                  <button
+                    className="delete-btn"
+                    onClick={() => navigate(`/marcas/eliminar/${brand.id}`)}
+                  >
+                    Eliminar
+                  </button>
+
+                </div>
+
+              </div>
             ))}
+
+          </div>
+
+          {/* BOTÓN AÑADIR */}
+          <div className="add-brand-container">
+            <button
+              className="add-brand-btn"
+              onClick={() => navigate("/marcas/añadir")}
+            >
+              + Añadir Marca
+            </button>
           </div>
 
         </div>
-      </section>
 
+      </section>
     </div>
   );
 }
