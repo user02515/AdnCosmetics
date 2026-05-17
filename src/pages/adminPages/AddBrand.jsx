@@ -6,6 +6,7 @@ function AddBrand() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
+    nombre: "",
     logo: null,
     description: "",
   });
@@ -18,18 +19,13 @@ function AddBrand() {
     if (name === "logo") {
       const file = files[0];
 
-      const reader = new FileReader();
+      setFormData((prev) => ({
+        ...prev,
+        logo: file,
+      }));
 
-      reader.onloadend = () => {
-        setFormData((prev) => ({
-          ...prev,
-          logo: reader.result,
-        }));
+      setPreview(URL.createObjectURL(file));
 
-        setPreview(reader.result);
-      };
-
-      if (file) reader.readAsDataURL(file);
     } else {
       setFormData((prev) => ({
         ...prev,
@@ -38,25 +34,40 @@ function AddBrand() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newBrand = {
-      id: Date.now(),
-      logo: formData.logo,
-      description: formData.description,
-    };
+    try {
 
-    const savedBrands =
-      JSON.parse(localStorage.getItem("brands")) || [];
+      const data = new FormData();
 
-    savedBrands.push(newBrand);
+      data.append("nombre", formData.nombre);
+      data.append("descripcion", formData.description);
+      data.append("logo", formData.logo);
 
-    localStorage.setItem("brands", JSON.stringify(savedBrands));
+      const res = await fetch(
+        "https://green-buffalo-260842.hostingersite.com/api/create_brand.php",
+        {
+          method: "POST",
+          body: data,
+        }
+      );
 
-    
+      const result = await res.json();
 
-    navigate("/admin/marcas");
+      if (!res.ok) {
+        alert(result.message || "Error");
+        return;
+      }
+
+      alert("Marca creada correctamente");
+
+      navigate("/admin/marcas");
+
+    } catch (err) {
+      console.error(err);
+      alert("Error de conexión");
+    }
   };
 
   return (
@@ -99,6 +110,22 @@ function AddBrand() {
               <img src={preview} alt="preview" />
             </div>
           )}
+
+          {/* NOMBRE */}
+          <div className="form-group">
+
+            <label>Nombre de la marca</label>
+
+            <input
+              type="text"
+              name="nombre"
+              value={formData.nombre}
+              onChange={handleChange}
+              placeholder="Ej: L'Oréal"
+              required
+            />
+
+          </div>
 
           {/* DESCRIPCION */}
           <div className="form-group">
