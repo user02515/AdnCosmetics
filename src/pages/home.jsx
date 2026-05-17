@@ -7,62 +7,18 @@ import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import Categorias from "./Categorias.jsx";
 import { useNavigate } from "react-router-dom";
-import imagen1 from "../assets/imagen1.png";
-import imagen2 from "../assets/imagen2.png";
-import imagen3 from "../assets/imagen3.png";
-import imagen4 from "../assets/imagen4.png";
 
+import imagen4 from "../assets/imagen4.png";
+import { API_URL, BASE_URL } from "../config/api";
 import "../styles/App.css";
 
 // ── CLAVE COMPARTIDA con EditCarousel ──
-const STORAGE_KEY = "vdn_slides";
 
-// ── Slides por defecto (solo se usan si NO hay nada en localStorage) ──
-const initialSlides = [
-  {
-    id: 1,
-    src: imagen1,
-    label: "Imagen 1",
-    caption: "Nueva colección de maquillaje",
-    sub: "Hasta 30% de descuento",
-  },
-  {
-    id: 2,
-    src: imagen2,
-    label: "Imagen 2",
-    caption: "Skincare premium importado",
-    sub: "Productos 100% originales",
-  },
-  {
-    id: 3,
-    src: imagen3,
-    label: "Imagen 3",
-    caption: "Perfumes internacionales",
-    sub: "Fragancias exclusivas",
-  },
-  {
-    id: 4,
-    src: null,
-    label: "Imagen 4",
-    caption: "Venta mayorista disponible",
-    sub: "Precio especial para distribuidoras",
-  },
-];
+
+
 
 // ── Leer slides (localStorage tiene prioridad, sino usa los iniciales) ──
-function loadSlides() {
-  try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
-    }
-  } catch {}
 
-  // ✅ Guardar los iniciales para que EditCarousel los vea
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(initialSlides));
-  return initialSlides;
-}
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // CAROUSEL
@@ -155,16 +111,26 @@ function CarouselSlider({ slides }) {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 export default function Home() {
   const navigate = useNavigate();
-
-  // ✅ Inicializa leyendo localStorage, SIN guardado automático
-  const [slides, setSlides] = useState(loadSlides);
-
-  // ✅ Re-sincronizar si el usuario vuelve de EditCarousel
   useEffect(() => {
-    const onFocus = () => setSlides(loadSlides());
-    window.addEventListener("focus", onFocus);
-    return () => window.removeEventListener("focus", onFocus);
+    fetch(`${API_URL}/get_carrusel_imagenes.php`)
+      .then((res) => res.json())
+      .then((data) => {
+        const formattedSlides = data.map((slide) => ({
+          id: slide.id,
+          src: `${BASE_URL}${slide.imagen_url}`,
+          label: slide.titulo,
+          caption: slide.titulo,
+          sub: slide.subtitulo,
+        }));
+
+        setSlides(formattedSlides);
+      })
+      .catch((err) => console.log(err));
   }, []);
+  // ✅ Inicializa leyendo localStorage, SIN guardado automático
+  const [slides, setSlides] = useState([]);
+
+  
 
   // Intersection Observer para animaciones reveal
   useEffect(() => {

@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import BrandCard from "../../components/BrandCard";
-import { brands } from "../../data/brands";
+
 import { useEffect, useState } from "react";
+import { API_URL } from "../../config/api";
 import "./BrandsAdmin.css";
 
 function Brands() {
@@ -9,8 +10,14 @@ function Brands() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const savedBrands = JSON.parse(localStorage.getItem("brands")) || [];
-    setAllBrands([...brands, ...savedBrands]);
+    fetch(`${API_URL}/get_brands.php`)
+      .then((res) => res.json())
+      .then((data) => {
+        setAllBrands(data);
+      })
+      .catch((err) => {
+        console.error("Error cargando marcas:", err);
+      });
   }, []);
 
   return (

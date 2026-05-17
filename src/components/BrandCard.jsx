@@ -1,3 +1,4 @@
+import { BASE_URL } from "../config/api";
 import "./BrandCards.css";
 function BrandCard({ brand }) {
   return (
@@ -6,15 +7,15 @@ function BrandCard({ brand }) {
 
       <div className="brand-logo">
         <img
-          src={brand.logo}
-          alt={brand.name}
+          src={`${BASE_URL}${brand.logo_url}`}
+          alt={brand.nombre}
         />
       </div>
 
       <div className="brand-content">
         
 
-        <p>{brand.description}</p>
+        <p>{brand.descripcion}</p>
       </div>
 
     </div>
