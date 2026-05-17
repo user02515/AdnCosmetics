@@ -1,0 +1,236 @@
+/* ─────────────────────────────
+   BASE
+──────────────────────────── */
+.brands-page-wrapper {
+  background: var(--off-white);
+  min-height: 100vh;
+}
+
+/* ─────────────────────────────
+   HERO
+──────────────────────────── */
+.brands-hero {
+  position: relative;
+  padding: 160px 7% 90px;
+  background: #07091f;
+  text-align: center;
+  overflow: hidden;
+}
+
+.brands-hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 15% 30%, rgba(255,61,139,0.25), transparent 55%),
+    radial-gradient(circle at 80% 50%, rgba(37,71,224,0.25), transparent 60%),
+    radial-gradient(circle at 50% 90%, rgba(255,128,181,0.12), transparent 60%);
+}
+
+.brands-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.brands-hero h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(48px, 6vw, 90px);
+  color: white;
+}
+
+.brands-hero h1 em {
+  font-style: italic;
+  background: linear-gradient(135deg, var(--pink-hot), var(--blue-vivid));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brands-hero p {
+  margin-top: 18px;
+  font-size: 16px;
+  color: rgba(255,255,255,0.6);
+}
+
+/* ─────────────────────────────
+   SECTION
+──────────────────────────── */
+.brands-section {
+  padding: 100px 7%;
+}
+
+/* ─────────────────────────────
+   CONTAINER
+──────────────────────────── */
+.brands-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ─────────────────────────────
+   GRID (columna)
+──────────────────────────── */
+.brands-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 25px;
+}
+
+/* ─────────────────────────────
+   WRAPPER
+──────────────────────────── */
+.brand-card-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  position: relative;
+  
+}
+
+/* ─────────────────────────────
+   CARD UNIFORME
+──────────────────────────── */
+.brand-card {
+  width: 100%;
+  max-width: 900px;
+
+  display: flex;
+  align-items: center;
+  gap: 40px;
+
+  padding: 30px;
+  padding-bottom: 70px; /* ← espacio para los botones */
+  border-radius: 25px;
+
+  background-color: #ffffff;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+
+  transition: 0.3s ease;
+}
+
+.brand-card:hover {
+  transform: translateY(-8px);
+}
+
+/* ─────────────────────────────
+   LOGO
+──────────────────────────── */
+.brand-logo img {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+}
+
+/* ─────────────────────────────
+   CONTENIDO
+──────────────────────────── */
+.brand-content {
+  text-align: left;
+  color: rgb(12, 11, 12);
+}
+
+/* ─────────────────────────────
+   BOTÓN AÑADIR (CENTRADO ABAJO)
+──────────────────────────── */
+.add-brand-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 80px;
+}
+
+.add-brand-btn {
+  border: none;
+  padding: 18px 34px;
+  border-radius: 20px;
+
+  background: linear-gradient(135deg, var(--pink-hot), var(--blue-vivid));
+  color: white;
+
+  font-weight: 700;
+  font-size: 1rem;
+
+  cursor: pointer;
+
+  transition: all 0.35s ease;
+
+  box-shadow: 0 10px 30px rgba(255,61,139,0.25);
+}
+
+.add-brand-btn:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 18px 45px rgba(37,71,224,0.25);
+}
+
+/* ─────────────────────────────
+   BOTONES HOVER (EDIT / DELETE)
+──────────────────────────── */
+.brand-actions {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+
+  transform: translateX(-50%) translateY(10px);
+
+  display: flex;
+  gap: 12px;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: all 0.35s ease;
+  z-index: 10;
+}
+
+.brand-card-wrapper:hover .brand-actions {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.edit-btn,
+.delete-btn {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 14px;
+  color: white;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+/* EFECTO LIFT (IGUAL AL DE AÑADIR) */
+.edit-btn:hover,
+.delete-btn:hover {
+  transform: translateY(-6px) scale(1.02);
+}
+
+.edit-btn {
+  background: linear-gradient(135deg, var(--blue-vivid), #5f7cff);
+}
+
+.delete-btn {
+  background: linear-gradient(135deg, #ff3d8b, #ff6ca8);
+}
+
+.back-button {
+  background: linear-gradient(
+    135deg,
+    #ff3d8b,
+    #2547e0
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 999px;
+
+  cursor: pointer;
+}

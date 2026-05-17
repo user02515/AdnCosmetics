@@ -58,5 +58,6 @@ echo json_encode([
         "id" => $user["id"],
         "nombre" => $user["nombre"],
         "email" => $user["email"]
-    ]
+    ],
+    "token" => "admin-auth-ok"
 ]);

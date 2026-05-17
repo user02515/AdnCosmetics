@@ -44,6 +44,8 @@ export default function AdminLogin() {
         return;
       }
 
+      localStorage.setItem("vdn_admin_token", data.token);
+
       navigate("/admin/dashboard");
 
     } catch {
