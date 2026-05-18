@@ -7,6 +7,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { API_URL } from "../../config/api";
+import { BASE_URL } from "../../config/api";
 
 const EMPTY = {
   numero_whatsapp: "",
@@ -43,7 +45,7 @@ export default function EditarInfoPagina() {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("vdn_admin_token");
-        const res   = await fetch("/api/configuracion.php", {
+        const res   = await fetch(`${API_URL}/get_info_pagina.php`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -118,7 +120,7 @@ export default function EditarInfoPagina() {
       payload.append("meta_descripcion",           form.meta_descripcion);
       if (logoFile) payload.append("logo",         logoFile);
 
-      const res  = await fetch("/api/configuracion.php", {
+      const res  = await fetch(`${API_URL}/update_config.php`, {
         method:  "POST",
         headers: { Authorization: `Bearer ${token}` },
         body:    payload,

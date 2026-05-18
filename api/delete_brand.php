@@ -31,21 +31,15 @@ if (!$data) {
 $logo_url = $data["logo_url"];
 
 // 2. borrar registro en BD
-$sql = "DELETE FROM marca WHERE id = ?";
+$sql = "
+UPDATE marca
+SET activo = 0
+WHERE id = ?
+";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
 
 if ($stmt->execute()) {
-
-    // 3. borrar imagen del servidor (seguro)
-    if ($logo_url) {
-
-        $fullPath = __DIR__ . "/../" . $logo_url;
-
-        if (file_exists($fullPath)) {
-            unlink($fullPath);
-        }
-    }
 
     echo json_encode([
         "success" => true,

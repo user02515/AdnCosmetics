@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { BASE_URL } from "../../config/api";
 import { API_URL } from "../../config/api";
 
 import "./BrandForm.css";
@@ -28,7 +29,9 @@ function EditBrand() {
           logoFile: null,
         });
 
-        setPreview(data.logo_url);
+        setPreview(
+          `${BASE_URL}${data.logo_url}`
+        );
       });
   }, [id]);
 
@@ -71,7 +74,7 @@ function EditBrand() {
     }
 
     const res = await fetch(
-      "${API_URL}/update_brand.php",
+      `${API_URL}/update_brand.php`,
       {
         method: "POST",
         body: form,
@@ -133,6 +136,21 @@ function EditBrand() {
             </div>
           )}
 
+          {/* nombre */}
+          <div className="form-group">
+
+            <label>Nombre de la marca</label>
+
+            <input
+              type="text"
+              name="nombre"
+              value={formData.nombre}
+              onChange={handleChange}
+              placeholder="Ej: L'Oréal"
+            />
+
+          </div>
+
           {/* descripcion */}
           <div className="form-group">
 
@@ -155,6 +173,7 @@ function EditBrand() {
           </button>
 
           <button
+            type="button"
             className="back-button"
             onClick={() => navigate("/admin/marcas")}
           >

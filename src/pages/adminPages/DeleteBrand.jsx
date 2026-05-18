@@ -1,8 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { brands } from "../../data/brands";
 import "./DeleteBrand.css";
 import { API_URL } from "../../config/api";
+import { getImageUrl } from "../../config/api";
+import { BASE_URL } from "../../config/api";
 
 function DeleteBrand() {
 
@@ -17,50 +18,77 @@ function DeleteBrand() {
 
     window.scrollTo(0, 0);
 
-    const savedBrands =
-      JSON.parse(localStorage.getItem("brands")) || [];
+    const fetchBrand = async () => {
 
-    // juntar TODAS las marcas
-    const allBrands = [...brands, ...savedBrands];
+      try {
 
-    const selectedBrand = allBrands.find(
-      (b) => b.id === Number(id)
-    );
+        const res = await fetch(
+          `${API_URL}/get_unique_brand.php?id=${id}`
+        );
 
-    if (!selectedBrand) {
-      navigate("/admin/marcas");
-      return;
-    }
+        const data = await res.json();
 
-    setBrand(selectedBrand);
+        if (!res.ok) {
+          navigate("/admin/marcas");
+          return;
+        }
+
+        setBrand(data);
+
+      } catch (error) {
+
+        console.error(error);
+
+        navigate("/admin/marcas");
+
+      }
+
+    };
+
+    fetchBrand();
 
   }, [id, navigate]);
 
   const handleDelete = async () => {
-    const confirmDelete = window.confirm(
-      "¿Seguro que deseas eliminar esta marca?"
-    );
 
-    if (!confirmDelete) return;
+    try {
 
-    const form = new FormData();
-    form.append("id", id);
+      const form = new FormData();
 
-    const res = await fetch(
-      "${API_URL}/delete_brand.php",
-      {
-        method: "POST",
-        body: form,
+      form.append("id", id);
+
+      const res = await fetch(
+        `${API_URL}/delete_brand.php`,
+        {
+          method: "POST",
+          body: form,
+        }
+      );
+
+      const text = await res.text();
+
+      console.log(text);
+
+      const data = JSON.parse(text);
+
+      if (data.success) {
+
+        navigate("/admin/marcas");
+
+      } else {
+
+        alert(data.message || "Error al eliminar");
+
       }
-    );
 
-    const data = await res.json();
+    } catch (error) {
 
-    if (data.success) {
-      navigate("/admin/marcas");
-    } else {
-      alert(data.message || "Error al eliminar");
+      console.error(error);
+
+      alert("Error del servidor");
+
     }
+
   };
 
   if (!brand) return null;
@@ -75,21 +103,21 @@ function DeleteBrand() {
 
             <div className="delete-brand-image">
               <img
-                src={brand.logo}
+                src={getImageUrl(brand.logo_url)}
                 alt="Marca"
               />
             </div>
 
             <div className="delete-brand-info">
 
-              <h2>¿Eliminar marca?</h2>
+              <h2>¿Eliminar marca <em>{brand.nombre}</em>?</h2>
 
               <p>
                 {brand.description}
               </p>
 
               <button onClick={() => setShowModal(true)}>
-                Eliminar Marca
+                Desactivar Marca
               </button>
 
               <br /><br />
@@ -114,10 +142,10 @@ function DeleteBrand() {
 
           <div className="delete-modal">
 
-            <h3>Eliminar Marca</h3>
+            <h3>Desactivar Marca</h3>
 
             <p>
-              ¿Seguro que deseas eliminar esta marca?
+              ¿Seguro que deseas desactivar la marca <em>{brand.nombre}</em>?
             </p>
 
             <div className="delete-modal-actions">
@@ -133,7 +161,7 @@ function DeleteBrand() {
                 className="confirm-btn"
                 onClick={handleDelete}
               >
-                Eliminar
+                Desactivar
               </button>
 
             </div>

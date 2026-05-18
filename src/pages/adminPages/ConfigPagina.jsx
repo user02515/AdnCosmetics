@@ -34,6 +34,34 @@ export default function ConfigPagina() {
     navigate("/admin/login");
   };
 
+  const handleSave = async () => {
+    try {
+      const res = await fetch(`${API_URL}/update_configuracion.php`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          numero_whatsapp,
+          mensaje_whatsapp_plantilla,
+          logo_url,
+          color_primario,
+          meta_descripcion
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message);
+      }
+
+      alert("Configuración actualizada");
+    } catch (err) {
+      alert(err.message || "Error al actualizar");
+    }
+  };
+
   return (
     <>
       <style>{`

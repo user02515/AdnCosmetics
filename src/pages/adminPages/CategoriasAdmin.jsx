@@ -4,67 +4,13 @@
 //  Uso: <Categorias />
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { API_URL } from "../../config/api";
+import { useNavigate, useParams } from "react-router-dom";
+import { BASE_URL } from "../../config/api";
 
 
-const categoriasIniciales = [
-  {
-    id: 1, numero: "01", emoji: "💄",
-    titulo: "Maquillaje", subtitulo: "Face & Color",
-    descripcion: "Las mejores marcas internacionales en bases, labiales, sombras y todo lo que necesitas para un look perfecto.",
-    tags: ["Bases", "Labiales", "Sombras", "Correctores", "Rubores"],
-    acento: "#e8186d", acentoClaro: "rgba(232,24,109,0.08)",
-  },
-  {
-    id: 2, numero: "02", emoji: "🧴",
-    titulo: "Skincare", subtitulo: "Skin & Care",
-    descripcion: "Tratamientos, hidratantes y serums importados directamente para que tu piel luzca radiante cada día.",
-    tags: ["Hidratantes", "Serums", "Limpiadores", "Mascarillas", "SPF"],
-    acento: "#2547e0", acentoClaro: "rgba(37,71,224,0.08)",
-  },
-  {
-    id: 3, numero: "03", emoji: "🌸",
-    titulo: "Perfumería", subtitulo: "Fragrance",
-    descripcion: "Fragancias exclusivas de las casas más reconocidas del mundo. Encuentra tu esencia perfecta.",
-    tags: ["Eau de Parfum", "Eau de Toilette", "Body Mist", "Sets Regalo"],
-    acento: "#c0186e", acentoClaro: "rgba(192,24,110,0.08)",
-  },
-  {
-    id: 4, numero: "04", emoji: "💅",
-    titulo: "Nail Art", subtitulo: "Nails & Beauty",
-    descripcion: "Esmaltes, geles y accesorios profesionales para uñas perfectas en casa o en el salón.",
-    tags: ["Esmaltes", "Geles UV", "Acrílicos", "Nail Art", "Herramientas"],
-    acento: "#4e78ff", acentoClaro: "rgba(78,120,255,0.08)",
-  },
-  {
-    id: 5, numero: "05", emoji: "💇",
-    titulo: "Cuidado Capilar", subtitulo: "Hair & Care",
-    descripcion: "Shampoos, mascarillas y aceites premium para un cabello saludable, brillante y bien cuidado.",
-    tags: ["Shampoos", "Mascarillas", "Aceites", "Tratamientos", "Styling"],
-    acento: "#ff3d8b", acentoClaro: "rgba(255,61,139,0.08)",
-  },
-  {
-    id: 6, numero: "06", emoji: "✨",
-    titulo: "Accesorios", subtitulo: "Tools & Kits",
-    descripcion: "Pinceles profesionales, esponjas, organizadores y kits completos para artistas de la belleza.",
-    tags: ["Pinceles", "Esponjas", "Kits Pro", "Organizadores"],
-    acento: "#7aa0ff", acentoClaro: "rgba(122,160,255,0.08)",
-  },
-  {
-    id: 7, numero: "07", emoji: "🌿",
-    titulo: "Sprites para Cabello", subtitulo: "Hair Sprites",
-    descripcion: "Sprays capilares Sprite con fórmulas especializadas para hidratar, fortalecer y embellecer tu cabello desde la raíz hasta las puntas.",
-    tags: ["Sprite Hidratación", "Sprite Brillo", "Sprite Sin Sal", "Sprite Keratina", "Sprite Rizos", "Sprite Liso"],
-    beneficios: [
-      { icono: "💧", texto: "Hidratación profunda sin residuo" },
-      { icono: "✨", texto: "Brillo inmediato y duradero" },
-      { icono: "🌱", texto: "Sin sulfatos ni parabenos" },
-      { icono: "💪", texto: "Fortalece y reduce la caída" },
-    ],
-    acento: "#1a9e5c", acentoClaro: "rgba(26,158,92,0.08)",
-  },
-];
+
 
 const styles = `
   .cats2-section {
@@ -552,16 +498,92 @@ export default function Categorias() {
     subtitulo: "",
     descripcion: "",
   });
-  
-  
-  const [categorias, setCategorias] =
-    useState(categoriasIniciales);
-    
-  const eliminarCategoria = (id) => {
-      setCategorias(
-        categorias.filter((cat) => cat.id !== id)
-      );
-    };
+
+
+  const [categorias, setCategorias] = useState([]);
+  useEffect(() => {
+
+    fetch(`${API_URL}/get_categorias.php`)
+      .then((res) => res.json())
+      .then((data) => {
+
+        const formattedCategorias = data.map((cat, index) => ({
+          id: cat.id,
+
+          numero: String(index + 1).padStart(2, "0"),
+
+          titulo: cat.nombre,
+
+          subtitulo: cat.eslogan || "Categoría",
+
+          descripcion: cat.descripcion,
+
+          imagen_url: cat.imagen_url,
+
+          emoji: ["💄", "🧴", "🌸", "💅", "💇", "✨", "🌿"][index % 7],
+
+          tags: [],
+
+          acento: [
+            "#e8186d",
+            "#2547e0",
+            "#c0186e",
+            "#4e78ff",
+            "#ff3d8b",
+            "#7aa0ff",
+            "#1a9e5c",
+          ][index % 7],
+
+          acentoClaro: [
+            "rgba(232,24,109,0.08)",
+            "rgba(37,71,224,0.08)",
+            "rgba(192,24,110,0.08)",
+            "rgba(78,120,255,0.08)",
+            "rgba(255,61,139,0.08)",
+            "rgba(122,160,255,0.08)",
+            "rgba(26,158,92,0.08)",
+          ][index % 7],
+
+        }));
+
+        setCategorias(formattedCategorias);
+
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+  }, []);
+
+  const eliminarCategoria = async (id) => {
+
+    try {
+
+      const res = await fetch(`${API_URL}/delete_categoria.php`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id })
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+
+        setCategorias(
+          categorias.filter((cat) => cat.id !== id)
+        );
+
+      } else {
+        alert(data.message || "Error al eliminar");
+      }
+
+    } catch (error) {
+      console.error(error);
+      alert("Error conectando con servidor");
+    }
+  };
   const editarCategoria = (cat) => {
 
     setModoEdicion(true);
@@ -594,47 +616,95 @@ export default function Categorias() {
 
     if (modoEdicion) {
 
-      setCategorias(
-        categorias.map((cat) =>
-          cat.id === categoriaActual.id
-            ? {
-                ...cat,
-                titulo: formData.titulo,
-                subtitulo: formData.subtitulo,
-                descripcion: formData.descripcion,
-              }
-            : cat
-        )
-      );
+      const categoriaEditada = {
+        id: categoriaActual.id,
+        nombre: formData.titulo,
+        eslogan: formData.subtitulo,
+        descripcion: formData.descripcion,
+      };
+
+      fetch(`${API_URL}/update_categoria.php`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(categoriaEditada)
+      })
+        .then(res => res.json())
+        .then(data => {
+
+          if (data.success) {
+
+            setCategorias(
+              categorias.map((cat) =>
+                cat.id === categoriaActual.id
+                  ? {
+                    ...cat,
+                    titulo: formData.titulo,
+                    subtitulo: formData.subtitulo,
+                    descripcion: formData.descripcion,
+                  }
+                  : cat
+              )
+            );
+
+            setMostrarModal(false);
+
+          } else {
+            alert(data.message);
+          }
+
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Error conectando con servidor");
+        });
 
     } else {
 
       const nuevaCategoria = {
-        id: Date.now(),
-
-        numero: String(categorias.length + 1)
-          .padStart(2, "0"),
-
-        emoji: "✨",
-
-        titulo: formData.titulo,
-
-        subtitulo: formData.subtitulo,
-
+        nombre: formData.titulo,
+        eslogan: formData.subtitulo,
         descripcion: formData.descripcion,
-
-        tags: ["Nuevo"],
-
-        acento: "#ff3d8b",
-
-        acentoClaro:
-          "rgba(255,61,139,0.08)",
       };
 
-      setCategorias([
-        ...categorias,
-        nuevaCategoria
-      ]);
+      fetch(`${API_URL}/create_categoria.php`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(nuevaCategoria)
+      })
+        .then(res => res.json())
+        .then(data => {
+
+          if (data.success) {
+
+            const nueva = {
+              id: data.id,
+              numero: String(categorias.length + 1).padStart(2, "0"),
+              emoji: "✨",
+              titulo: formData.titulo,
+              subtitulo: formData.subtitulo,
+              descripcion: formData.descripcion,
+              tags: ["Nuevo"],
+              acento: "#ff3d8b",
+              acentoClaro: "rgba(255,61,139,0.08)",
+            };
+
+            setCategorias([...categorias, nueva]);
+            setMostrarModal(false);
+
+          } else {
+            alert(data.message);
+          }
+
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Error conectando con servidor");
+        });
+
     }
 
     setMostrarModal(false);

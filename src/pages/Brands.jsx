@@ -1,8 +1,22 @@
 import BrandCard from "../components/BrandCard";
-import { brands } from "../data/brands";
+import { useEffect, useState } from "react";
+import { API_URL } from "../config/api";
 import "./Brands.css";
 
 function Brands() {
+  const [brands, setBrands] = useState([]);
+
+  useEffect(() => {
+    fetch(`${API_URL}/get_brands.php`)
+      .then((res) => res.json())
+      .then((data) => {
+        setBrands(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, []);
+
   return (
     <div className="brands-page-wrapper">
 
