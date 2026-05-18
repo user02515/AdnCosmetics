@@ -1,8 +1,44 @@
 import ProductCard from "../components/ProductCard";
-import { products } from "../data/products";
+import { useEffect, useState } from "react";
+import { API_URL, BASE_URL } from "../config/api";
 import "./Products.css";
 
 function Products() {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+
+    fetch(`${API_URL}/get_products.php`)
+      .then((res) => res.json())
+      .then((data) => {
+
+        const formattedProducts = data.map((p) => ({
+          id: p.id,
+
+          name: p.nombre,
+
+          brand: p.marca,
+
+          category: p.categoria,
+
+          price: p.precio_minoritario,
+
+          image: p.imagen_principal
+            ? `${BASE_URL}${p.imagen_principal}`
+            : "https://via.placeholder.com/500x500?text=Sin+Imagen",
+
+          slug: p.slug,
+        }));
+
+        setProducts(formattedProducts);
+
+      })
+      .catch((err) => {
+        console.error("Error cargando productos:", err);
+      });
+
+  }, []);
+
   return (
     <div className="products-page-wrapper">
 

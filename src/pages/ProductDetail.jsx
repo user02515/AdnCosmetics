@@ -1,13 +1,53 @@
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { products } from "../data/products";
+import { API_URL } from "../config/api";
 import "./ProductDetails.css";
 function ProductDetail() {
 
   const { id } = useParams();
 
-  const product = products.find(
-    (p) => p.id === Number(id)
-  );
+  const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+
+    fetch(`${API_URL}/get_products.php`)
+      .then((res) => res.json())
+      .then((data) => {
+
+        const found = data.find(
+          (p) => p.id === id
+        );
+
+        if (found) {
+
+          setProduct({
+            id: found.id,
+
+            name: found.nombre,
+
+            brand: found.marca,
+
+            category: found.categoria,
+
+            price: found.precio_minoritario,
+
+            image: found.imagen_principal,
+
+            description: found.descripcion_corta || "",
+
+            use: found.uso || "",
+
+            audience: found.publico || "",
+          });
+
+        }
+
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
+  }, [id]);
 
   if (!product) {
     return <h1>Producto no encontrado</h1>;

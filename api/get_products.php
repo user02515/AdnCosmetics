@@ -1,4 +1,5 @@
 <?php
+header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
 include "connection.php";
 
@@ -7,7 +8,13 @@ SELECT
     p.id,
     p.nombre,
     p.slug,
+    p.descripcion_corta,
+    p.uso,
+    p.publico,
     p.precio_minoritario,
+
+    p.marca_id,
+    p.categoria_id,
 
     m.nombre AS marca,
     c.nombre AS categoria,

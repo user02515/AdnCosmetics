@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-
+import { API_URL, BASE_URL } from "../../config/api";
 import { Link } from "react-router-dom";
 import ProductCard from "../../components/ProductCardAdmin";
 
-import { products as defaultProducts } from "../../data/products";
+
 
 import "./ProductsAdmin.css";
 
@@ -24,15 +24,43 @@ function Products() {
 
   useEffect(() => {
 
-    const savedProducts =
-      JSON.parse(
-        localStorage.getItem("products")
-      ) || [];
+    fetch(`${API_URL}/get_products.php`)
+      .then((res) => res.json())
+      .then((data) => {
 
-    setAllProducts([
-      ...defaultProducts,
-      ...savedProducts
-    ]);
+        const formattedProducts = data.map((p) => ({
+          id: p.id,
+
+          name: p.nombre,
+
+          brand: p.marca,
+
+          category: p.categoria,
+
+          price: p.precio_minoritario,
+
+          image: p.imagen_principal
+            ? `${BASE_URL}${p.imagen_principal}`
+            : "https://via.placeholder.com/500x500?text=Sin+Imagen",
+
+          slug: p.slug,
+
+          description: p.descripcion_corta,
+
+          use: p.uso,
+
+          audience: p.publico,
+        }));
+
+        setAllProducts(formattedProducts);
+
+      })
+      .catch((err) => {
+        console.error(
+          "Error cargando productos:",
+          err
+        );
+      });
 
   }, []);
 

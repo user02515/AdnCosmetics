@@ -1,10 +1,7 @@
 import { useParams, useNavigate } from "react-router-dom";
 
 import { useEffect, useState } from "react";
-
-import { products as defaultProducts }
-  from "../../data/products";
-
+import { API_URL, BASE_URL } from "../../config/api";
 import "./ProductDetailsAdmin.css";
 
 function ProductDetailAd() {
@@ -19,25 +16,43 @@ function ProductDetailAd() {
 
     window.scrollTo(0, 0);
 
-    // productos añadidos
-    const savedProducts =
-      JSON.parse(
-        localStorage.getItem("products")
-      ) || [];
+    fetch(`${API_URL}/get_products.php`)
+      .then((res) => res.json())
+      .then((data) => {
 
-    // unir productos base + añadidos
-    const allProducts = [
-      ...defaultProducts,
-      ...savedProducts
-    ];
+        const foundProduct = data.find(
+          (p) => p.id === id
+        );
 
-    // buscar producto
-    const foundProduct =
-      allProducts.find(
-        (p) => p.id === Number(id)
-      );
+        if (foundProduct) {
 
-    setProduct(foundProduct);
+          setProduct({
+            id: foundProduct.id,
+
+            name: foundProduct.nombre,
+
+            brand: foundProduct.marca,
+
+            category: foundProduct.categoria,
+
+            price: foundProduct.precio_minoritario,
+
+            image: `${BASE_URL}/${foundProduct.imagen_principal}`,
+
+            description:
+              foundProduct.descripcion_corta,
+
+            use: foundProduct.uso,
+
+            audience: foundProduct.publico,
+          });
+
+        }
+
+      })
+      .catch((err) => {
+        console.error(err);
+      });
 
   }, [id]);
 

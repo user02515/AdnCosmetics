@@ -1,58 +1,75 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import { API_URL, BASE_URL } from "../../config/api";
 import "./DeleteProduct.css";
 
 function DeleteProduct() {
 
   const navigate = useNavigate();
-
   const { id } = useParams();
 
   const [product, setProduct] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const [showModal, setShowModal] =
-    useState(false);
-
+  /* ───────── CARGAR PRODUCTO ───────── */
   useEffect(() => {
 
     window.scrollTo(0, 0);
 
-    const savedProducts =
-      JSON.parse(localStorage.getItem("products")) || [];
+    fetch(`${API_URL}/get_products.php`)
+      .then(res => res.json())
+      .then(data => {
 
-    const selectedProduct =
-      savedProducts.find(
-        (p) => p.id === Number(id)
-      );
+        const found = data.find(p => Number(p.id) === Number(id));
 
-    if (!selectedProduct) {
+        if (!found) {
+          navigate("/admin/productos");
+          return;
+        }
 
-      navigate("/admin/productos");
+        setProduct({
+          id: found.id,
+          name: found.nombre,
+          image: found.imagen_principal
+            ? `${BASE_URL}/${found.imagen_principal}`
+            : "https://via.placeholder.com/500x500?text=Sin+Imagen",
+        });
 
-      return;
-    }
-
-    setProduct(selectedProduct);
+      })
+      .catch(() => navigate("/admin/productos"));
 
   }, [id, navigate]);
 
-  const handleDelete = () => {
+  /* ───────── ELIMINAR ───────── */
+  const handleDelete = async () => {
 
-    const savedProducts =
-      JSON.parse(localStorage.getItem("products")) || [];
+    setLoading(true);
 
-    const updatedProducts =
-      savedProducts.filter(
-        (p) => p.id !== Number(id)
-      );
+    try {
 
-    localStorage.setItem(
-      "products",
-      JSON.stringify(updatedProducts)
-    );
+      const form = new FormData();
+      form.append("id", id);
 
-    navigate("/admin/productos");
+      const res = await fetch(`${API_URL}/delete_product.php`, {
+        method: "POST",
+        body: form,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        navigate("/admin/productos");
+      } else {
+        console.error("Error al eliminar:", data.message);
+        setLoading(false);
+        setShowModal(false);
+      }
+
+    } catch (err) {
+      console.error(err);
+      setLoading(false);
+    }
   };
 
   if (!product) return null;
@@ -60,69 +77,39 @@ function DeleteProduct() {
   return (
     <>
       <div className="delete-product-page">
-
         <div className="delete-product-card">
-
           <div className="delete-product-content">
 
             <div className="delete-product-image">
-
-              <img
-                src={product.image}
-                alt={product.name}
-              />
-
+              <img src={product.image} alt={product.name} />
             </div>
 
             <div className="delete-product-info">
-
-              <h2>
-                ¿Eliminar producto?
-              </h2>
-
-              <p>
-                {product.name}
-              </p>
-
-              <button
-                onClick={() =>
-                  setShowModal(true)
-                }
-              >
+              <h2>¿Eliminar producto?</h2>
+              <p>{product.name}</p>
+              <button onClick={() => setShowModal(true)}>
                 Eliminar Producto
               </button>
-
             </div>
 
           </div>
-
         </div>
-
       </div>
 
       {/* MODAL */}
       {showModal && (
-
         <div className="delete-modal-overlay">
-
           <div className="delete-modal">
 
-            <h3>
-              Eliminar Producto
-            </h3>
-
-            <p>
-              ¿Seguro que deseas eliminar este
-              producto?
-            </p>
+            <h3>Eliminar Producto</h3>
+            <p>¿Seguro que deseas eliminar este producto?</p>
 
             <div className="delete-modal-actions">
 
               <button
                 className="cancel-btn"
-                onClick={() =>
-                  setShowModal(false)
-                }
+                onClick={() => setShowModal(false)}
+                disabled={loading}
               >
                 Cancelar
               </button>
@@ -130,16 +117,15 @@ function DeleteProduct() {
               <button
                 className="confirm-btn"
                 onClick={handleDelete}
+                disabled={loading}
               >
-                Eliminar
+                {loading ? "Eliminando..." : "Eliminar"}
               </button>
 
             </div>
 
           </div>
-
         </div>
-
       )}
     </>
   );
