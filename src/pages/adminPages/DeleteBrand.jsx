@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { brands } from "../../data/brands";
 import "./DeleteBrand.css";
+import { API_URL } from "../../config/api";
 
 function DeleteBrand() {
 
@@ -35,21 +36,31 @@ function DeleteBrand() {
 
   }, [id, navigate]);
 
-  const handleDelete = () => {
-
-    const savedBrands =
-      JSON.parse(localStorage.getItem("brands")) || [];
-
-    const updatedBrands = savedBrands.filter(
-      (b) => b.id !== Number(id)
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm(
+      "¿Seguro que deseas eliminar esta marca?"
     );
 
-    localStorage.setItem(
-      "brands",
-      JSON.stringify(updatedBrands)
+    if (!confirmDelete) return;
+
+    const form = new FormData();
+    form.append("id", id);
+
+    const res = await fetch(
+      "${API_URL}/delete_brand.php",
+      {
+        method: "POST",
+        body: form,
+      }
     );
 
-    navigate("/admin/marcas");
+    const data = await res.json();
+
+    if (data.success) {
+      navigate("/admin/marcas");
+    } else {
+      alert(data.message || "Error al eliminar");
+    }
   };
 
   if (!brand) return null;
@@ -82,11 +93,11 @@ function DeleteBrand() {
               </button>
 
               <br /><br />
-              
+
               <button onClick={() => navigate("/admin/marcas")}>
                 Volver a la lista
               </button>
-              
+
 
             </div>
 
@@ -135,7 +146,7 @@ function DeleteBrand() {
 
     </>
   );
-  
+
 }
 
 export default DeleteBrand;

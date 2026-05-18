@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { API_URL } from "../../config/api";
 
 import "./BrandForm.css";
 
@@ -10,91 +11,80 @@ function EditBrand() {
   const { id } = useParams();
 
   const [formData, setFormData] = useState({
-    id: "",
-    logo: "",
+    nombre: "",
     description: "",
+    logoFile: null,
   });
 
   const [preview, setPreview] = useState("");
 
-  // cargar marca
   useEffect(() => {
+    fetch(`${API_URL}/get_unique_brand.php?id=${id}`)
+      .then(res => res.json())
+      .then(data => {
+        setFormData({
+          nombre: data.nombre,
+          description: data.descripcion,
+          logoFile: null,
+        });
 
-    const savedBrands =
-      JSON.parse(localStorage.getItem("brands")) || [];
-
-    const brandToEdit = savedBrands.find(
-      (brand) => brand.id === Number(id)
-    );
-
-    if (brandToEdit) {
-
-      setFormData(brandToEdit);
-
-      setPreview(brandToEdit.logo);
-
-    }
-
+        setPreview(data.logo_url);
+      });
   }, [id]);
 
   const handleChange = (e) => {
-
     const { name, value, files } = e.target;
 
-    // imagen
     if (name === "logo") {
-
       const file = files[0];
 
       if (file) {
-
-        const imageUrl =
-          URL.createObjectURL(file);
-
+        // preview SOLO visual
+        const imageUrl = URL.createObjectURL(file);
         setPreview(imageUrl);
 
+        // archivo real para enviar al backend
         setFormData({
           ...formData,
-          logo: imageUrl,
+          logoFile: file,
         });
-
       }
-
     } else {
-
       setFormData({
         ...formData,
         [name]: value,
       });
-
     }
   };
 
-  const handleSubmit = (e) => {
-
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const savedBrands =
-      JSON.parse(localStorage.getItem("brands")) || [];
+    const form = new FormData();
 
-    const updatedBrands = savedBrands.map((brand) =>
+    form.append("id", id);
+    form.append("nombre", formData.nombre);
+    form.append("descripcion", formData.description);
 
-      brand.id === Number(id)
-        ? formData
-        : brand
+    if (formData.logoFile) {
+      form.append("logo", formData.logoFile);
+    }
 
+    const res = await fetch(
+      "${API_URL}/update_brand.php",
+      {
+        method: "POST",
+        body: form,
+      }
     );
 
-    localStorage.setItem(
-      "brands",
-      JSON.stringify(updatedBrands)
-    );
+    const data = await res.json();
 
-
-
-    // volver
-    navigate("/admin/marcas");
-
+    if (data.success) {
+      navigate("/admin/marcas");
+    } else {
+      alert(data.message || "Error al actualizar");
+    }
   };
 
   return (
