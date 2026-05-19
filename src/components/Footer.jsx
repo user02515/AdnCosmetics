@@ -5,19 +5,24 @@
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { API_URL, BASE_URL } from "../config/api";
+import { useTiendaConfig } from "../config/TiendaConfigContext";
 
 const footerLinks = [
   { label: "Inicio",             to: "/",               section: null },
-  { label: "Categorías",         to: "/#productos",     section: "productos" },
-  { label: "Marcas",             to: "/#marcas",        section: "marcas" },
+  { label: "Categorías",         to: "/categorias",    section: null },
+  { label: "Productos",          to: "/productos",     section: null },
+  { label: "Marcas",             to: "/marcas",        section: null },
   { label: "Acerca de Nosotros", to: "/sobre-nosotros", section: null },
-  { label: "Contacto",           to: "/#contacto",      section: "contacto" },
+  { label: "Contacto",           to: "/contacto",      section: null },
 ];
 
 export default function Footer() {
   const navigate = useNavigate();
   const location = useLocation();
   const year = new Date().getFullYear();
+
+  const { config } = useTiendaConfig();
 
   const handleLinkClick = (e, link) => {
     e.preventDefault();
@@ -56,17 +61,18 @@ export default function Footer() {
           margin-bottom: 40px;
         }
 
-        .vdn-footer-brand-text {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 28px; font-weight: 700;
-          color: var(--pink-soft);
-          letter-spacing: 1px; line-height: 1;
+        .vdn-footer-brand-logo {
+          height: 100px;
+          width: auto;
+          object-fit: contain;
+          filter: drop-shadow(0 0 10px rgba(255,61,139,0.3));
+          transition: filter 0.3s, transform 0.3s;
+          display: block;
+          margin-bottom: 10px;
         }
-        .vdn-footer-brand-text span { color: var(--blue-glow); }
-        .vdn-footer-brand-sub {
-          font-size: 9px; letter-spacing: 4px;
-          color: rgba(255,255,255,0.25);
-          text-transform: uppercase; margin-top: 6px; display: block;
+        .vdn-footer-brand-logo:hover {
+          filter: drop-shadow(0 0 20px rgba(255,61,139,0.55));
+          transform: scale(1.04);
         }
         .vdn-footer-brand-desc {
           font-size: 13px; color: rgba(255,255,255,0.3);
@@ -96,7 +102,9 @@ export default function Footer() {
           display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
         }
         .vdn-footer-contact-item .icon { font-size: 14px; }
-        .vdn-footer-contact-item span { font-size: 13px; color: rgba(255,255,255,0.35); }
+        .vdn-footer-contact-item span,
+        .vdn-footer-contact-item a { font-size: 13px; color: rgba(255,255,255,0.35); text-decoration: none; }
+        .vdn-footer-contact-item a:hover { color: var(--pink-soft); }
 
         .vdn-footer-divider {
           width: 100%; height: 1px;
@@ -129,7 +137,6 @@ export default function Footer() {
           background: var(--pink-hot); box-shadow: 0 0 6px var(--pink-hot);
         }
 
-        /* ── Link discreto de acceso admin ── */
         .vdn-footer-admin-link {
           display: inline-flex;
           align-items: center;
@@ -140,12 +147,8 @@ export default function Footer() {
           letter-spacing: 0.5px;
           transition: color 0.3s;
         }
-        .vdn-footer-admin-link:hover {
-          color: rgba(255,255,255,0.4);
-        }
-        .vdn-footer-admin-link .admin-icon {
-          font-size: 11px;
-        }
+        .vdn-footer-admin-link:hover { color: rgba(255,255,255,0.4); }
+        .vdn-footer-admin-link .admin-icon { font-size: 11px; }
 
         @media (max-width: 768px) {
           .vdn-footer { padding: 40px 24px; }
@@ -156,14 +159,16 @@ export default function Footer() {
 
       <footer className="vdn-footer">
         <div className="vdn-footer-top">
-          {/* Columna 1: Marca */}
+
+          {/* Columna 1: Logo */}
           <div>
             <Link to="/" style={{ textDecoration: "none" }}>
-              <div className="vdn-footer-brand-text">
-                <span>VDN</span> Cosmetics
-              </div>
+              <img
+                src={BASE_URL + config?.logo_url}
+                alt="VDN Cosmetics Import & Export"
+                className="vdn-footer-brand-logo"
+              />
             </Link>
-            <div className="vdn-footer-brand-sub">Import &amp; Export</div>
             <p className="vdn-footer-brand-desc">
               Importadora de cosméticos premium. Productos 100% originales para
               mayor y menor en Bolivia.
@@ -189,15 +194,19 @@ export default function Footer() {
             <div className="vdn-footer-contact-title">Contacto</div>
             <div className="vdn-footer-contact-item">
               <span className="icon">📍</span>
-              <span>La Paz, Bolivia</span>
+              <span>El Alto, La Paz, Bolivia</span>
             </div>
             <div className="vdn-footer-contact-item">
               <span className="icon">📱</span>
-              <span>+591 XXX XXXX</span>
+              <a href={`https://wa.me/${config?.numero_whatsapp?.replace(/\D/g, "")}`} target="_blank" rel="noreferrer">
+                {config?.numero_whatsapp}
+              </a>
             </div>
             <div className="vdn-footer-contact-item">
               <span className="icon">📧</span>
-              <span>info@vdncosmetics.com</span>
+              <a href="mailto:importadora@vndcosmetics.com">
+                importadora@vndcosmetics.com
+              </a>
             </div>
           </div>
         </div>

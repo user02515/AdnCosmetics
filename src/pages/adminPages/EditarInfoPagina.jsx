@@ -18,22 +18,22 @@ const EMPTY = {
 };
 
 export default function EditarInfoPagina() {
-  const navigate    = useNavigate();
-  const fileRef     = useRef(null);
+  const navigate = useNavigate();
+  const fileRef = useRef(null);
   const adminNombre = localStorage.getItem("vdn_admin_nombre") || "Administrador";
 
   // Estado original (lo que vino del servidor)
   const [original, setOriginal] = useState(EMPTY);
   // Estado actual (lo que el usuario está editando)
-  const [form, setForm]         = useState(EMPTY);
+  const [form, setForm] = useState(EMPTY);
   // Preview de imagen
   const [logoPreview, setLogoPreview] = useState(null);
-  const [logoFile, setLogoFile]       = useState(null);
+  const [logoFile, setLogoFile] = useState(null);
 
-  const [loading, setLoading]   = useState(true);
-  const [saving, setSaving]     = useState(false);
-  const [success, setSuccess]   = useState(false);
-  const [error, setError]       = useState("");
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   // ── Detectar cambios ──
   const hasChanges =
@@ -45,16 +45,16 @@ export default function EditarInfoPagina() {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("vdn_admin_token");
-        const res   = await fetch(`${API_URL}/get_info_pagina.php`, {
+        const res = await fetch(`${API_URL}/get_info_pagina.php`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
         if (res.ok && data) {
           const loaded = {
-            numero_whatsapp:             data.numero_whatsapp             || "",
-            mensaje_whatsapp_plantilla:  data.mensaje_whatsapp_plantilla  || "",
-            logo_url:                    data.logo_url                    || "",
-            meta_descripcion:            data.meta_descripcion            || "",
+            numero_whatsapp: data.numero_whatsapp || "",
+            mensaje_whatsapp_plantilla: data.mensaje_whatsapp_plantilla || "",
+            logo_url: data.logo_url || "",
+            meta_descripcion: data.meta_descripcion || "",
           };
           setOriginal(loaded);
           setForm(loaded);
@@ -98,7 +98,7 @@ export default function EditarInfoPagina() {
 
   const removeLogo = () => {
     setLogoFile(null);
-    setLogoPreview(original.logo_url || null);
+    setLogoPreview(null); // ← always clear so the dropzone shows
     if (fileRef.current) fileRef.current.value = "";
     setSuccess(false);
   };
@@ -112,18 +112,18 @@ export default function EditarInfoPagina() {
     setSuccess(false);
 
     try {
-      const token   = localStorage.getItem("vdn_admin_token");
+      const token = localStorage.getItem("vdn_admin_token");
       const payload = new FormData();
 
-      payload.append("numero_whatsapp",            form.numero_whatsapp);
+      payload.append("numero_whatsapp", form.numero_whatsapp);
       payload.append("mensaje_whatsapp_plantilla", form.mensaje_whatsapp_plantilla);
-      payload.append("meta_descripcion",           form.meta_descripcion);
-      if (logoFile) payload.append("logo",         logoFile);
+      payload.append("meta_descripcion", form.meta_descripcion);
+      if (logoFile) payload.append("logo", logoFile);
 
-      const res  = await fetch(`${API_URL}/update_config.php`, {
-        method:  "POST",
+      const res = await fetch(`${API_URL}/update_config.php`, {
+        method: "POST",
         headers: { Authorization: `Bearer ${token}` },
-        body:    payload,
+        body: payload,
       });
       const data = await res.json();
 
@@ -644,7 +644,7 @@ export default function EditarInfoPagina() {
               </div>
 
               {/* ── Alertas ── */}
-              {error   && <div className="eip-alert error">⚠️ {error}</div>}
+              {error && <div className="eip-alert error">⚠️ {error}</div>}
               {success && <div className="eip-alert success">✅ Cambios guardados correctamente.</div>}
 
               {/* ── Botones ── */}

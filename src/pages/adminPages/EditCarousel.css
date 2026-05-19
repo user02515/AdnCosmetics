@@ -360,3 +360,9 @@ h2 {
 
   cursor: pointer;
 }
+.saving-indicator {
+  font-size: 11px;
+  color: #999;
+  margin-top: 6px;
+  display: inline-block;
+}

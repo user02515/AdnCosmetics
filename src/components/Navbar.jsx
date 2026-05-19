@@ -6,21 +6,25 @@
 
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useTiendaConfig } from "../config/TiendaConfigContext.jsx";
+import { API_URL, BASE_URL } from "../config/api";
 
 const navLinks = [
-  { label: "Inicio",              to: "/",                section: null },
-  { label: "Categorías",          to: "/categorias",      section: null },
-  { label: "Productos",           to: "/productos",      section: null },
-  { label: "Marcas",              to: "/marcas",         section: null },
-  { label: "Acerca de Nosotros",  to: "/sobre-nosotros",  section: null },
+  { label: "Inicio", to: "/", section: null },
+  { label: "Categorías", to: "/categorias", section: null },
+  { label: "Productos", to: "/productos", section: null },
+  { label: "Marcas", to: "/marcas", section: null },
+  { label: "Acerca de Nosotros", to: "/sobre-nosotros", section: null },
 ];
 
 export default function Navbar() {
-  const [scrolled, setScrolled]   = useState(false);
-  const [menuOpen, setMenuOpen]   = useState(false);
-  const navigate  = useNavigate();
-  const location  = useLocation();
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
+
+  const { config } = useTiendaConfig();
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handleScroll);
@@ -92,16 +96,16 @@ export default function Navbar() {
         }
 
         .vdn-nav-brand { display: flex; align-items: center; gap: 14px; cursor: pointer; text-decoration: none; }
-        .vdn-nav-brand-text {
-          font-family: 'Cormorant Garamond', serif;
-          font-size: 26px; font-weight: 700; letter-spacing: 1px;
-          color: var(--pink-soft); display: block; line-height: 1.1;
+        .vdn-nav-brand-logo {
+          height: 80px;
+          width: auto;
+          object-fit: contain;
+          filter: drop-shadow(0 0 8px rgba(255,61,139,0.35));
+          transition: filter 0.3s, transform 0.3s;
         }
-        .vdn-nav-brand-text span { color: var(--blue-glow); }
-        .vdn-nav-brand-sub {
-          font-size: 9px; letter-spacing: 4px;
-          color: rgba(255,255,255,0.35);
-          text-transform: uppercase; margin-top: 2px; display: block;
+        .vdn-nav-brand-logo:hover {
+          filter: drop-shadow(0 0 16px rgba(255,61,139,0.6));
+          transform: scale(1.04);
         }
 
         .vdn-nav-menu { display: flex; gap: 36px; list-style: none; margin: 0; padding: 0; }
@@ -170,12 +174,11 @@ export default function Navbar() {
       <nav className="vdn-nav">
         {/* Logo — siempre va al inicio */}
         <Link to="/" className="vdn-nav-brand">
-          <div>
-            <div className="vdn-nav-brand-text">
-              <span>VDN</span> Cosmetics
-            </div>
-            <div className="vdn-nav-brand-sub">Import &amp; Export</div>
-          </div>
+          <img
+            src={BASE_URL + config?.logo_url}
+            alt="VDN Cosmetics Import & Export"
+            className="vdn-nav-brand-logo"
+          />
         </Link>
 
         {/* Links desktop */}
@@ -196,7 +199,7 @@ export default function Navbar() {
         {/* Botón WhatsApp */}
         <a
           className="vdn-nav-pill"
-          href="https://wa.me/59171234567"
+          href={`https://wa.me/${config?.numero_whatsapp?.replace(/\D/g, "")}`}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -208,9 +211,19 @@ export default function Navbar() {
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Menú"
         >
-          <span style={menuOpen ? { transform: "rotate(45deg) translate(5px,5px)" } : {}} />
+          <span
+            style={
+              menuOpen ? { transform: "rotate(45deg) translate(5px,5px)" } : {}
+            }
+          />
           <span style={menuOpen ? { opacity: 0 } : {}} />
-          <span style={menuOpen ? { transform: "rotate(-45deg) translate(5px,-5px)" } : {}} />
+          <span
+            style={
+              menuOpen
+                ? { transform: "rotate(-45deg) translate(5px,-5px)" }
+                : {}
+            }
+          />
         </button>
       </nav>
 
@@ -229,7 +242,7 @@ export default function Navbar() {
         <a
           className="vdn-nav-pill"
           style={{ alignSelf: "flex-start", marginTop: 8 }}
-          href="https://wa.me/59171234567"
+          href={`https://wa.me/${config?.numero_whatsapp?.replace(/\D/g, "")}`}
           target="_blank"
           rel="noopener noreferrer"
         >

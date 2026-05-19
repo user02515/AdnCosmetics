@@ -5,108 +5,242 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import "./EditCarousel.css";
-
-const STORAGE_KEY = "vdn_slides";
+import { API_URL } from "../../config/api";
+import { getImageUrl } from "../../config/api";
 
 export default function EditCarousel() {
   const navigate = useNavigate();
 
-  const loadSlides = () => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) return parsed;
-      }
-    } catch (e) {
-      console.log("Error loading slides:", e);
-    }
-    return [];
-  };
 
-  const [slides, setSlides] = useState(loadSlides);
+  const [slides, setSlides] = useState([]);
   const [caption, setCaption] = useState("");
   const [sub, setSub] = useState("");
   const [preview, setPreview] = useState(null);
-  const [base64, setBase64] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
+
   const [fileName, setFileName] = useState("");
   const [loading, setLoading] = useState(false);
   const [saved, setSaved] = useState(true);
   const fileInputRef = useRef(null);
+  const [savingSlideId, setSavingSlideId] = useState(null);
 
   useEffect(() => {
-    setSlides(loadSlides());
+
+    fetch(`${API_URL}/get_carrusel_imagenes.php`)
+      .then((res) => res.json())
+      .then((data) => {
+
+        const formattedSlides = data.map((slide) => ({
+          id: slide.id,
+
+          src: getImageUrl(slide.imagen_url),
+
+          caption: slide.titulo,
+
+          sub: slide.subtitulo,
+
+          enlace: slide.enlace,
+
+          orden: slide.orden,
+        }));
+
+        setSlides(formattedSlides);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+
   }, []);
 
-  const saveToStorage = (newSlides) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newSlides));
-  };
+
 
   const handleFileChange = (e) => {
+
     const file = e.target.files[0];
+
     if (!file) return;
+
     setFileName(file.name);
-    setLoading(true);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setBase64(reader.result);
-      setPreview(reader.result);
-      setLoading(false);
-    };
-    reader.readAsDataURL(file);
+
+    setPreview(URL.createObjectURL(file));
+
+    setSelectedFile(file);
   };
 
-  const addSlide = () => {
-    if (!base64) return alert("Selecciona una imagen primero");
+  const addSlide = async () => {
 
-    const newSlide = {
-      id: Date.now(),
-      src: base64,
-      label: `Imagen ${slides.length + 1}`,
-      caption: caption.trim() || "Sin título",
-      sub: sub.trim() || "",
-    };
+    if (!selectedFile) {
+      alert("Selecciona una imagen");
+      return;
+    }
 
-    const updated = [...slides, newSlide];
-    setSlides(updated);
-    setSaved(false);
+    try {
 
-    setBase64(null);
-    setPreview(null);
-    setFileName("");
-    setCaption("");
-    setSub("");
-    if (fileInputRef.current) fileInputRef.current.value = "";
+      const form = new FormData();
+
+      form.append("titulo", caption);
+
+      form.append("subtitulo", sub);
+
+      form.append("imagen", selectedFile);
+
+      form.append("orden", slides.length);
+
+      const res = await fetch(
+        `${API_URL}/create_carousel_slide.php`,
+        {
+          method: "POST",
+          body: form,
+        }
+      );
+
+      let data;
+      try {
+        data = await res.json();
+      } catch (e) {
+        const text = await res.text();
+        console.log("Respuesta no JSON:", text);
+        alert("Error del servidor");
+        return;
+      }
+
+      if (data.success) {
+
+        const newSlide = {
+          id: data.id,
+
+          src: getImageUrl(data.imagen_url),
+
+          caption,
+
+          sub,
+        };
+
+        setSlides([...slides, newSlide]);
+
+        setPreview(null);
+
+        setSelectedFile(null);
+
+        setCaption("");
+
+        setSub("");
+
+        setFileName("");
+
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+
+      } else {
+
+        alert(data.message || "Error");
+
+      }
+
+    } catch (err) {
+
+      console.error(err);
+
+      alert("Error del servidor");
+
+    }
+
   };
 
-  const removeSlide = (id) => {
-    const updated = slides.filter((s) => s.id !== id);
-    setSlides(updated);
-    setSaved(false);
+  const removeSlide = async (id) => {
+    const res = await fetch(`${API_URL}/delete_carousel_slide.php`, {
+      method: "POST",
+      body: new URLSearchParams({ id }),
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      setSlides(slides.filter(s => s.id !== id));
+    } else {
+      alert(data.message);
+    }
   };
 
-  const updateSlide = (id, field, value) => {
-    const updated = slides.map((s) =>
+  const updateSlide = async (id, field, value) => {
+
+    // actualiza instantáneamente en frontend
+    const updatedSlides = slides.map((s) =>
       s.id === id ? { ...s, [field]: value } : s
     );
-    setSlides(updated);
-    setSaved(false);
+
+    setSlides(updatedSlides);
+
+    // obtiene slide actualizado
+    const slide = updatedSlides.find((s) => s.id === id);
+
+    if (!slide) return;
+
+    try {
+      setSavingSlideId(id);
+
+      const payload = new FormData();
+
+      payload.append("id", id);
+      payload.append(
+        "titulo",
+        field === "caption" ? value : slide.caption
+      );
+
+      payload.append(
+        "subtitulo",
+        field === "sub" ? value : slide.sub
+      );
+
+      payload.append("orden", slides.findIndex((s) => s.id === id));
+
+      const res = await fetch(
+        "https://vdncosmetics.com/api/update_carousel_slide.php",
+        {
+          method: "POST",
+          body: payload,
+        }
+      );
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error(data);
+      }
+
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSavingSlideId(null);
+    }
   };
-  const moveSlide = (index, direction) => {
-    const updated = [...slides];
+
+  const moveSlide = async (index, direction) => {
+    const newSlides = [...slides];
 
     const newIndex = index + direction;
-
     if (newIndex < 0 || newIndex >= slides.length) return;
 
-    [updated[index], updated[newIndex]] = [updated[newIndex], updated[index]];
+    [newSlides[index], newSlides[newIndex]] =
+      [newSlides[newIndex], newSlides[index]];
 
-    setSlides(updated);
-    setSaved(false);
+    // recalcular orden
+    const reordered = newSlides.map((s, i) => ({
+      id: s.id,
+      orden: i
+    }));
+
+    setSlides(newSlides);
+
+    await fetch(`${API_URL}/update_carousel_order.php`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(reordered),
+    });
   };
 
   const handleSaveAndGoHome = () => {
-    saveToStorage(slides);
     setSaved(true);
     navigate("/");
   };
@@ -185,7 +319,7 @@ export default function EditCarousel() {
         <button
           className="add-btn"
           onClick={addSlide}
-          disabled={!base64 || loading}
+          disabled={!preview || loading}
         >
           + Agregar al carrusel
         </button>
@@ -213,15 +347,24 @@ export default function EditCarousel() {
                   <input
                     className="inline-edit"
                     value={s.caption}
-                    onChange={(e) => updateSlide(s.id, "caption", e.target.value)}
+                    onChange={(e) =>
+                      updateSlide(s.id, "caption", e.target.value)
+                    }
                     placeholder="Titulo"
                   />
                   <input
                     className="inline-edit sub"
                     value={s.sub}
-                    onChange={(e) => updateSlide(s.id, "sub", e.target.value)}
+                    onChange={(e) =>
+                      updateSlide(s.id, "sub", e.target.value)
+                    }
                     placeholder="Subtitulo"
                   />
+                  {savingSlideId === s.id && (
+                    <span className="saving-indicator">
+                      Guardando...
+                    </span>
+                  )}
                 </div>
                 <div className="order-buttons">
                   <button

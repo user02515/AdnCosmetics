@@ -43,7 +43,7 @@ if ($result->num_rows === 0) {
 
 $user = $result->fetch_assoc();
 
-if ($password !== $user["password_hash"]) {
+if (!password_verify($password, $user["password_hash"])) {
     http_response_code(401);
     echo json_encode([
         "message" => "Contraseña incorrecta"

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./BrandForm.css";
 
+import { API_URL } from "../../config/api";
+
 function AddBrand() {
   const navigate = useNavigate();
 
@@ -46,7 +48,7 @@ function AddBrand() {
       data.append("logo", formData.logo);
 
       const res = await fetch(
-        "https://green-buffalo-260842.hostingersite.com/api/create_brand.php",
+        `${API_URL}/create_brand.php`,
         {
           method: "POST",
           body: data,

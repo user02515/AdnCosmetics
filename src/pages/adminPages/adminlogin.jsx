@@ -7,6 +7,7 @@
 
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { API_URL } from "../../config/api";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -25,7 +26,7 @@ export default function AdminLogin() {
 
     try {
 
-      const res = await fetch("https://green-buffalo-260842.hostingersite.com/api/login.php", {
+      const res = await fetch(`${API_URL}/login.php`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

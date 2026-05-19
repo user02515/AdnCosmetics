@@ -1,247 +1,253 @@
 import { useEffect, useState } from "react";
-
-import {
-  useNavigate,
-  useParams
-} from "react-router-dom";
-
+import { useNavigate, useParams } from "react-router-dom";
+import { API_URL, BASE_URL } from "../../config/api";
 import "./ProductForm.css";
 
 function EditProduct() {
 
   const navigate = useNavigate();
-
   const { id } = useParams();
+
+  const [brands, setBrands] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const [formData, setFormData] = useState({
     id: "",
-    image: "",
+    image: null,
     name: "",
     brand: "",
     category: "",
     price: "",
     description: "",
+    use: "",
+    audience: "",
   });
 
   const [preview, setPreview] = useState("");
 
-  // cargar producto
+  /* ───────── LOAD SELECTS ───────── */
   useEffect(() => {
 
-    const savedProducts =
-      JSON.parse(localStorage.getItem("products")) || [];
+    fetch(`${API_URL}/get_brands.php`)
+      .then(res => res.json())
+      .then(data => setBrands(data));
 
-    const productToEdit =
-      savedProducts.find(
-        (product) =>
-          product.id === Number(id)
-      );
+    fetch(`${API_URL}/get_categorias.php`)
+      .then(res => res.json())
+      .then(data => setCategories(data));
 
-    if (productToEdit) {
+  }, []);
 
-      setFormData(productToEdit);
+  /* ───────── LOAD PRODUCT ───────── */
+  useEffect(() => {
 
-      setPreview(productToEdit.image);
+    fetch(`${API_URL}/get_products.php`)
+      .then(res => res.json())
+      .then(data => {
 
-    }
+        const product = data.find(
+          (p) => Number(p.id) === Number(id)
+        );
+
+        if (product) {
+
+          setFormData({
+            id: product.id,
+            name: product.nombre,
+            brand: product.marca_id,
+            category: product.categoria_id,
+            price: product.precio_minoritario,
+            description: product.descripcion_corta,
+            use: product.uso,
+            audience: product.publico,
+            image: null
+          });
+
+          setPreview(`${BASE_URL}/${product.imagen_principal}`);
+        }
+
+      });
 
   }, [id]);
 
+  /* ───────── HANDLE CHANGE ───────── */
   const handleChange = (e) => {
 
-    const {
-      name,
-      value,
-      files
-    } = e.target;
+    const { name, value, files } = e.target;
 
-    // imagen
     if (name === "image") {
 
       const file = files[0];
 
       if (file) {
+        setFormData({ ...formData, image: file });
 
-        const reader =
-          new FileReader();
-
-        reader.onloadend = () => {
-
-          setPreview(reader.result);
-
-          setFormData({
-            ...formData,
-            image: reader.result,
-          });
-
-        };
-
+        const reader = new FileReader();
+        reader.onloadend = () => setPreview(reader.result);
         reader.readAsDataURL(file);
       }
 
     } else {
-
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-
+      setFormData({ ...formData, [name]: value });
     }
   };
 
-  const handleSubmit = (e) => {
-
+  /* ───────── SUBMIT UPDATE ───────── */
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("🔥 FORM DATA ANTES DE ENVIAR:", formData);
+    try {
 
-    const savedProducts =
-      JSON.parse(localStorage.getItem("products")) || [];
+      /* ───────── 1. UPDATE PRODUCT ───────── */
+      const form = new FormData();
 
-    const updatedProducts =
-      savedProducts.map((product) =>
+      form.append("id", formData.id);
+      form.append("nombre", formData.name);
+      form.append("marca_id", formData.brand);
+      form.append("categoria_id", formData.category);
+      form.append("precio_minoritario", formData.price);
+      form.append("descripcion_corta", formData.description);
+      form.append("uso", formData.use);
+      form.append("publico", formData.audience);
 
-        product.id === Number(id)
-          ? formData
-          : product
+      const res = await fetch(`${API_URL}/update_product.php`, {
+        method: "POST",
+        body: form
+      });
 
-      );
+      const text = await res.text();
+      console.log("PRODUCT RESPONSE:", text);
 
-    localStorage.setItem(
-      "products",
-      JSON.stringify(updatedProducts)
-    );
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        console.error("Error JSON product");
+        return;
+      }
 
-    navigate("/productos");
+      if (!data.success) {
+        console.error(data.message);
+        return;
+      }
+
+      /* ───────── 2. UPDATE IMAGE (solo si hay nueva) ───────── */
+      if (formData.image) {
+
+        const imgForm = new FormData(); // ✔ AHORA SÍ EXISTE
+        imgForm.append("producto_id", formData.id);
+        imgForm.append("image", formData.image);
+        imgForm.append("alt_text", formData.name);
+        imgForm.append("es_principal", 1);
+        imgForm.append("orden", 1);
+
+        const imgRes = await fetch(`${API_URL}/update_product_image.php`, {
+          method: "POST",
+          body: imgForm
+        });
+
+        const imgText = await imgRes.text();
+        console.log("IMG RESPONSE:", imgText);
+
+        try {
+          const imgData = JSON.parse(imgText);
+
+          if (!imgData.success) {
+            console.error("Error imagen:", imgData.message);
+          }
+
+        } catch (e) {
+          console.error("Error JSON imagen");
+        }
+      }
+
+      navigate("/admin/productos");
+
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
-
     <div className="brand-form-page">
 
       <div className="brand-form-container">
 
-        <span className="section-eyebrow">
-          Editar Producto
-        </span>
+        <h1>Editar <em>Producto</em></h1>
 
-        <h1>
-          Editar <em>Producto</em>
-        </h1>
-
-        <p className="form-subtitle">
-          Modifica la información del producto.
-        </p>
-
-        <form
-          onSubmit={handleSubmit}
-          className="brand-form"
-        >
+        <form onSubmit={handleSubmit} className="brand-form">
 
           {/* IMAGEN */}
-          <div className="form-group">
+          <input
+            type="file"
+            name="image"
+            onChange={handleChange}
+          />
 
-            <label>Imagen</label>
-
-            <input
-              type="file"
-              name="image"
-              accept="image/*"
-              onChange={handleChange}
-            />
-
-          </div>
-
-          {/* PREVIEW */}
           {preview && (
-
-            <div className="image-preview">
-
-              <img
-                src={preview}
-                alt="preview"
-              />
-
-            </div>
-
+            <img src={preview} alt="preview" />
           )}
 
           {/* NOMBRE */}
-          <div className="form-group">
-
-            <label>Nombre</label>
-
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              required
-            />
-
-          </div>
+          <input
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
 
           {/* MARCA */}
-          <div className="form-group">
-
-            <label>Marca</label>
-
-            <input
-              type="text"
-              name="brand"
-              value={formData.brand}
-              onChange={handleChange}
-              required
-            />
-
-          </div>
-
-          {/* CATEGORIA */}
-          <div className="form-group">
-
-            <label>Categoría</label>
-
-            <input
-              type="text"
-              name="category"
-              value={formData.category}
-              onChange={handleChange}
-              required
-            />
-
-          </div>
-
-          {/* PRECIO */}
-          <div className="form-group">
-
-            <label>Precio</label>
-
-            <input
-              type="number"
-              name="price"
-              value={formData.price}
-              onChange={handleChange}
-              required
-            />
-
-          </div>
-
-          {/* DESCRIPCION */}
-          <div className="form-group">
-
-            <label>Descripción</label>
-
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows="5"
-            />
-
-          </div>
-
-          <button
-            type="submit"
-            className="save-btn"
+          <select
+            name="brand"
+            value={formData.brand}
+            onChange={handleChange}
           >
+            {brands.map(b => (
+              <option key={b.id} value={b.id}>
+                {b.nombre}
+              </option>
+            ))}
+          </select>
+
+          {/* CATEGORÍA */}
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+          >
+            {categories.map(c => (
+              <option key={c.id} value={c.id}>
+                {c.nombre}
+              </option>
+            ))}
+          </select>
+
+          <input
+            name="price"
+            type="number"
+            value={formData.price}
+            onChange={handleChange}
+          />
+
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+          />
+
+          <textarea
+            name="use"
+            value={formData.use}
+            onChange={handleChange}
+          />
+
+          <textarea
+            name="audience"
+            value={formData.audience}
+            onChange={handleChange}
+          />
+
+          <button type="submit">
             Guardar Cambios
           </button>
 
