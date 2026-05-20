@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { API_URL } from "../config/api";
+import { API_URL, BASE_URL } from "../config/api";
 import "./ProductDetails.css";
+import { useNavigate } from "react-router-dom";
 function ProductDetail() {
-
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const [product, setProduct] = useState(null);
@@ -58,7 +59,7 @@ function ProductDetail() {
 
       <div className="detail-image">
         <img
-          src={product.image}
+          src={BASE_URL + product.image}
           alt={product.name}
         />
       </div>
@@ -83,6 +84,15 @@ function ProductDetail() {
         <h3>Público recomendado</h3>
         <p>{product.audience}</p>
 
+      </div>
+
+      <div className="back-btn">
+        <button
+          className="back-button"
+          onClick={() => navigate('/productos')}
+        >
+          Volver a productos
+        </button>
       </div>
 
     </div>

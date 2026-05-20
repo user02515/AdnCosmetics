@@ -134,7 +134,7 @@ function AddProduct() {
         <span className="section-eyebrow">Nuevo Producto</span>
         <h1>Añadir <em>Producto</em></h1>
 
-        <form onSubmit={handleSubmit} className="brand-form">
+        <form onSubmit={handleSubmit} className="form-group">
 
           {/* IMAGEN */}
           <input

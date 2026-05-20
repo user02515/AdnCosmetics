@@ -90,6 +90,14 @@ function DeleteProduct() {
               <button onClick={() => setShowModal(true)}>
                 Eliminar Producto
               </button>
+
+              <br />
+              <button
+                className="cancel-btn"
+                onClick={() => navigate("/admin/productos")}
+              >
+                Cancelar
+              </button>
             </div>
 
           </div>
@@ -121,6 +129,12 @@ function DeleteProduct() {
               >
                 {loading ? "Eliminando..." : "Eliminar"}
               </button>
+
+              <button
+                className="cancel-btn"
+                onClick={() => setShowModal(false)}
+                disabled={loading}
+              >Cerrar</button>
 
             </div>
 

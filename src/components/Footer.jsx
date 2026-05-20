@@ -14,7 +14,6 @@ const footerLinks = [
   { label: "Productos",          to: "/productos",     section: null },
   { label: "Marcas",             to: "/marcas",        section: null },
   { label: "Acerca de Nosotros", to: "/sobre-nosotros", section: null },
-  { label: "Contacto",           to: "/contacto",      section: null },
 ];
 
 export default function Footer() {

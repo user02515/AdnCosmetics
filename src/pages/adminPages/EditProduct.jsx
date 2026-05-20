@@ -175,7 +175,7 @@ function EditProduct() {
 
         <h1>Editar <em>Producto</em></h1>
 
-        <form onSubmit={handleSubmit} className="brand-form">
+        <form onSubmit={handleSubmit} className="form-group">
 
           {/* IMAGEN */}
           <input
@@ -249,6 +249,14 @@ function EditProduct() {
 
           <button type="submit">
             Guardar Cambios
+          </button>
+
+          <button
+            type="button"
+            className="cancel-btn"
+            onClick={() => navigate("/admin/productos")}
+          >
+            Cancelar
           </button>
 
         </form>

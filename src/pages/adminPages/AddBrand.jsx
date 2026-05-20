@@ -148,6 +148,13 @@ function AddBrand() {
           <button type="submit" className="save-btn">
             Guardar Marca
           </button>
+          <button
+            type="button"
+            className="cancel-btn"
+            onClick={() => navigate("/admin/marcas")}
+          >
+            Cancelar
+          </button>
 
         </form>
 
