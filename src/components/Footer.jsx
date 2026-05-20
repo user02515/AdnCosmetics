@@ -224,6 +224,10 @@ export default function Footer() {
             <span className="admin-icon">🔒</span>
             ¿Eres administrador? Inicia sesión aquí
           </Link>
+
+          <br />
+          <br />
+          <br />
         </div>
       </footer>
     </>

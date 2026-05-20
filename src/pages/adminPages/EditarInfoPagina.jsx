@@ -602,7 +602,7 @@ export default function EditarInfoPagina() {
                   </div>
                 ) : (
                   <div className="eip-logo-preview">
-                    <img src={logoPreview} alt="Logo preview" />
+                    <img src={BASE_URL + logoPreview} alt="preview" />
                     <div className="eip-logo-preview-info">
                       <div className="eip-logo-preview-name">
                         {logoFile ? logoFile.name : "Logo actual"}

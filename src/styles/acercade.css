@@ -206,11 +206,9 @@ nav {
   100% {
     transform: translate(0, 0) scale(1);
   }
-
   33% {
     transform: translate(30px, -25px) scale(1.05);
   }
-
   66% {
     transform: translate(-15px, 35px) scale(0.96);
   }
@@ -238,7 +236,6 @@ nav {
   color: var(--pink-soft);
   text-decoration: none;
 }
-
 .breadcrumb span {
   color: rgba(255, 255, 255, 0.2);
 }
@@ -278,7 +275,6 @@ nav {
     opacity: 0;
     transform: translateY(28px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -327,7 +323,7 @@ nav {
 
 .quienes-left h2 {
   font-family: "Cormorant Garamond", serif;
-  font-size: clamp(40px, 4.5vw, 62px);
+  font-size: clamp(36px, 4.5vw, 62px);
   font-weight: 700;
   line-height: 1.05;
   color: var(--dark);
@@ -339,19 +335,23 @@ nav {
   color: var(--pink-hot);
 }
 
+/* ── STAT ROW — responsive fix ── */
 .quienes-stat-row {
   display: flex;
-  gap: 36px;
+  flex-wrap: wrap; /* ← wrap en móvil */
+  gap: clamp(16px, 3vw, 36px);
   margin-top: 48px;
+  align-items: stretch;
 }
 
 .q-stat {
   text-align: center;
+  min-width: 0; /* ← evita overflow en flex */
 }
 
 .q-stat .n {
   font-family: "Cormorant Garamond", serif;
-  font-size: 52px;
+  font-size: clamp(36px, 5vw, 52px); /* ← antes fijo 52px */
   font-weight: 700;
   line-height: 1;
   background: linear-gradient(135deg, var(--pink-hot), var(--blue-sky));
@@ -369,19 +369,22 @@ nav {
 
 .q-stat-divider {
   width: 1px;
+  align-self: stretch;
   background: linear-gradient(
     to bottom,
     transparent,
     rgba(255, 61, 139, 0.3),
     transparent
   );
+  flex-shrink: 0;
 }
 
+/* ── QUIÉNES RIGHT ── */
 .quienes-right {
 }
 
 .quienes-right p {
-  font-size: 17px;
+  font-size: clamp(14px, 1.6vw, 17px);
   line-height: 1.95;
   color: #555;
   font-weight: 300;
@@ -389,16 +392,18 @@ nav {
 }
 
 .quienes-right p:first-of-type {
-  font-size: 20px;
+  font-size: clamp(16px, 2vw, 20px);
   font-weight: 400;
   color: var(--dark);
   line-height: 1.7;
+  overflow: hidden; /* ← contiene el float del drop-cap */
 }
 
+/* Drop-cap: desactivado en móvil (ver @media abajo) */
 .quienes-right p:first-of-type::first-letter {
   float: left;
   font-family: "Cormorant Garamond", serif;
-  font-size: 80px;
+  font-size: clamp(52px, 8vw, 80px); /* ← antes fijo 80px */
   font-weight: 700;
   line-height: 0.75;
   margin: 8px 14px 0 0;
@@ -417,7 +422,7 @@ nav {
 
 .quienes-highlight p {
   font-family: "Cormorant Garamond", serif;
-  font-size: 22px;
+  font-size: clamp(17px, 2vw, 22px);
   font-weight: 600;
   font-style: italic;
   color: var(--dark);
@@ -565,7 +570,6 @@ nav {
     #ff80b5 100%
   );
 }
-
 .pg2 {
   background: linear-gradient(
     145deg,
@@ -575,7 +579,6 @@ nav {
     #7aa0ff 100%
   );
 }
-
 .pg3 {
   background: linear-gradient(
     145deg,
@@ -585,7 +588,6 @@ nav {
     #ffd166 100%
   );
 }
-
 .pg4 {
   background: linear-gradient(
     145deg,
@@ -626,7 +628,7 @@ nav {
   font-weight: 300;
 }
 
-/* ── PRICING (copied & adapted) ── */
+/* ── PRICING ── */
 .pricing-section {
   padding: 110px 7%;
   background: white;
@@ -740,7 +742,6 @@ nav {
 .retail h3 {
   color: var(--dark);
 }
-
 .wholesale h3 {
   color: white;
 }
@@ -755,7 +756,6 @@ nav {
 .retail .p-desc {
   color: #888;
 }
-
 .wholesale .p-desc {
   color: rgba(255, 255, 255, 0.55);
 }
@@ -803,7 +803,6 @@ nav {
   background: rgba(255, 61, 139, 0.1);
   color: var(--pink-hot);
 }
-
 .wholesale .check {
   background: linear-gradient(135deg, var(--pink-hot), var(--blue-vivid));
   color: white;
@@ -865,7 +864,6 @@ nav {
   100% {
     background-position: 0% 50%;
   }
-
   50% {
     background-position: 100% 50%;
   }
@@ -924,7 +922,6 @@ nav {
   align-items: start;
 }
 
-/* Social buttons */
 .social-buttons {
   display: flex;
   flex-direction: column;
@@ -993,11 +990,9 @@ nav {
   color: #128c7e;
   box-shadow: 0 4px 20px rgba(37, 211, 102, 0.08);
 }
-
 .sb-wa:hover {
   box-shadow: 0 12px 40px rgba(37, 211, 102, 0.2);
 }
-
 .sb-wa .sb-icon {
   background: linear-gradient(135deg, #25d366, #128c7e);
 }
@@ -1012,11 +1007,9 @@ nav {
   color: #c13584;
   box-shadow: 0 4px 20px rgba(228, 64, 95, 0.06);
 }
-
 .sb-ig:hover {
   box-shadow: 0 12px 40px rgba(228, 64, 95, 0.18);
 }
-
 .sb-ig .sb-icon {
   background: linear-gradient(
     135deg,
@@ -1034,11 +1027,9 @@ nav {
   color: #111;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
-
 .sb-tt:hover {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
 }
-
 .sb-tt .sb-icon {
   background: #000;
 }
@@ -1053,11 +1044,9 @@ nav {
   color: #1877f2;
   box-shadow: 0 4px 20px rgba(24, 119, 242, 0.06);
 }
-
 .sb-fb:hover {
   box-shadow: 0 12px 40px rgba(24, 119, 242, 0.18);
 }
-
 .sb-fb .sb-icon {
   background: #1877f2;
 }
@@ -1066,7 +1055,6 @@ nav {
   font-size: 14px;
   font-weight: 600;
 }
-
 .sb-label-sub {
   font-size: 11px;
   font-weight: 400;
@@ -1074,7 +1062,6 @@ nav {
   margin-top: 1px;
 }
 
-/* Contact info panel */
 .contact-info-panel {
   background: white;
   border-radius: 24px;
@@ -1098,7 +1085,6 @@ nav {
   padding: 18px 0;
   border-bottom: 1px solid #f3f3f3;
 }
-
 .cinfo-row:last-child {
   border-bottom: none;
   padding-bottom: 0;
@@ -1126,7 +1112,6 @@ nav {
   letter-spacing: 2px;
   text-transform: uppercase;
 }
-
 .cinfo-text .cinfo-val {
   font-size: 15px;
   color: var(--dark);
@@ -1173,7 +1158,6 @@ footer p {
   text-transform: uppercase;
   transition: color 0.3s;
 }
-
 .f-links a:hover {
   color: var(--pink-soft);
 }
@@ -1186,18 +1170,20 @@ footer p {
     opacity 0.8s ease,
     transform 0.8s ease;
 }
-
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-/* ── RESPONSIVE ── */
+/* ════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════ */
+
+/* ── ≤ 1024px ── */
 @media (max-width: 1024px) {
   nav {
     padding: 16px 24px;
   }
-
   .nav-menu {
     display: none;
   }
@@ -1207,7 +1193,6 @@ footer p {
     padding: 80px 6%;
     gap: 40px;
   }
-
   .quienes-left {
     position: static;
   }
@@ -1215,11 +1200,9 @@ footer p {
   .partner-cards {
     grid-template-columns: 1fr 1fr;
   }
-
   .pricing-grid {
     grid-template-columns: 1fr;
   }
-
   .contact-body {
     grid-template-columns: 1fr;
     gap: 40px;
@@ -1230,39 +1213,18 @@ footer p {
     text-align: center;
     padding: 32px 24px;
   }
-
   .f-links {
     justify-content: center;
   }
 }
 
-@media (max-width: 600px) {
-  .partner-cards {
-    grid-template-columns: 1fr;
-  }
-
-  .quienes-stat-row {
-    gap: 20px;
-  }
-
-  body {
-    cursor: auto;
-  }
-
-  .page-hero h1 {
-    font-size: clamp(44px, 14vw, 72px);
-  }
-}
-/* ══════════════════════════════════════════
-   MOBILE — mejoras generales
-══════════════════════════════════════════ */
+/* ── ≤ 768px ── */
 @media (max-width: 768px) {
   /* Hero */
   .page-hero {
     min-height: 44vh;
     padding: 100px 6% 48px;
   }
-
   .page-hero h1 {
     font-size: clamp(38px, 12vw, 60px);
   }
@@ -1273,7 +1235,6 @@ footer p {
     padding: 56px 6%;
     gap: 32px;
   }
-
   .quienes-left {
     position: static;
   }
@@ -1282,22 +1243,26 @@ footer p {
     gap: 16px;
   }
 
-  /* Con quiénes trabajamos */
+  /* Drop-cap: reducida en tablet */
+  .quienes-right p:first-of-type::first-letter {
+    font-size: clamp(44px, 10vw, 64px);
+    margin: 6px 10px 0 0;
+  }
+
+  /* Con quiénes */
   .conquienes {
     padding: 56px 6%;
   }
-
   .partner-cards {
     grid-template-columns: 1fr;
     gap: 20px;
-    padding: 0 6%;
+    padding: 0; /* ← quitado padding lateral extra */
   }
 
   /* Pricing */
   .pricing-section {
     padding: 56px 6%;
   }
-
   .pricing-grid {
     grid-template-columns: 1fr;
     gap: 24px;
@@ -1307,21 +1272,16 @@ footer p {
   .contact-section {
     padding: 56px 6%;
   }
-
   .contact-body {
     grid-template-columns: 1fr;
     gap: 32px;
   }
-
   .social-buttons {
     gap: 12px;
   }
-
   .social-btn {
     padding: 14px 16px;
   }
-
-  /* Mapa */
   .contact-hdr h2 {
     font-size: clamp(28px, 8vw, 42px);
   }
@@ -1333,13 +1293,29 @@ footer p {
     gap: 24px;
     padding: 32px 6%;
   }
-
   .f-links {
     justify-content: center;
     flex-wrap: wrap;
   }
 }
 
+/* ── ≤ 600px ── */
+@media (max-width: 600px) {
+  .partner-cards {
+    grid-template-columns: 1fr;
+  }
+  .quienes-stat-row {
+    gap: 14px;
+  }
+  .page-hero h1 {
+    font-size: clamp(44px, 14vw, 72px);
+  }
+  body {
+    cursor: auto;
+  }
+}
+
+/* ── ≤ 480px — mobile pequeño ── */
 @media (max-width: 480px) {
   .page-hero {
     padding: 90px 5% 40px;
@@ -1349,27 +1325,57 @@ footer p {
     padding: 48px 5%;
   }
 
+  /* Drop-cap desactivada en móvil pequeño para evitar desbordamiento */
+  .quienes-right p:first-of-type::first-letter {
+    float: none;
+    font-size: inherit;
+    line-height: inherit;
+    margin: 0;
+    background: none;
+    -webkit-text-fill-color: inherit;
+    color: var(--pink-hot);
+    font-weight: 700;
+  }
+
+  /* Stats: apilar verticalmente si no caben */
+  .quienes-stat-row {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .q-stat-divider {
+    display: none;
+  } /* ← ocultar divisores verticales */
+  .q-stat {
+    text-align: left;
+  }
+
   .conquienes-header h2 {
     font-size: clamp(28px, 9vw, 44px);
   }
-
-  .partner-cards {
-    padding: 0 5%;
+  .conquienes {
+    padding: 48px 5%;
   }
 
   .pricing-section {
     padding: 48px 5%;
   }
+  .p-inner {
+    padding: 32px 24px;
+  }
 
   .contact-section {
     padding: 48px 5%;
   }
-
-  .sb-label-text {
-    font-size: 14px;
-  }
-
   .contact-info-panel {
     padding: 24px 20px;
+  }
+  .sb-label-text {
+    font-size: 13px;
+  }
+
+  /* Pricing cards full padding reduce */
+  .p-card h3 {
+    font-size: clamp(28px, 7vw, 38px);
   }
 }
