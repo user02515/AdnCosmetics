@@ -324,7 +324,7 @@ function ACercaDe() {
               </a>
 
               <a
-                href="https://instagram.com/"
+                href="https://www.instagram.com/vdncosmetics/"
                 target="_blank"
                 rel="noreferrer"
                 className="social-btn sb-ig"
